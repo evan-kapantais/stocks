@@ -1,0 +1,196 @@
+* {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+.App {
+  display: flex;
+  min-height: 100vh;
+}
+
+section {
+  width: 75%;
+  min-height: 100vh;
+}
+
+#watchlist,
+#portfolio {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+  }
+}
+
+aside {
+  min-width: 350px;
+  width: 25%;
+  border-right: 1px solid rgba($color: #000000, $alpha: 0.2);
+}
+
+#search-form {
+  margin-bottom: 2rem;
+}
+
+input,
+label {
+  display: block;
+}
+
+label {
+  font-size: 0.8rem;
+  color: grey;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+input {
+  padding: 0.4rem;
+  border: none;
+  box-shadow: 0 0 2px rgba($color: #000000, $alpha: 0.5);
+  border-radius: 3px;
+}
+
+input:not(:last-of-type) {
+  margin-bottom: 1rem;
+}
+
+.stock {
+  padding: 1rem;
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+  min-height: 100px;
+  display: flex;
+  justify-content: space-between;
+
+  &:not(:last-of-type) {
+    border-bottom: none;
+  }
+  
+  h3  {
+    margin-bottom: 0.5rem;
+  }
+  
+  h4 {
+    color: grey;
+    max-width: 20ch;
+  }
+
+  &:hover{
+    background: rgb(244, 244, 244);
+  }
+}
+
+// Stock button
+
+.add-stock-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 1rem;
+}
+
+.add-stock-button {
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  background: #fff;
+  box-shadow: 0 0 3px rgb(161, 161, 161);
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  color: #111;
+  transition: all 300ms ease;
+
+  &:hover {
+    background: #111;
+    color: #fff;
+  }
+
+  &:before {
+    content: 'Add Stock';
+    position: absolute;
+    left: -80px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #111;
+    color: #fff;
+    padding: 0.3rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: all 300ms ease;
+  }
+
+  &:hover:before {
+    opacity: 1;
+  }
+}
+
+// Form
+
+.form-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Stock preview
+
+#stock-preview-wrapper {
+  width: 100%;
+  height: 100%;
+  padding: 4rem;
+
+  header,
+  .meta {
+    margin-bottom: 4rem;
+  }
+
+  h2 {
+    font-size: 1rem;
+    color: grey;
+  }
+
+  main {
+    .address {
+      margin-bottom: 0.5rem;
+    }
+
+    .address,
+    .employees {
+      display: flex;
+      align-items: center;
+
+      img {
+        margin-right: 0.5rem;
+      }
+    }
+    p {
+      line-height: 1.8;
+      max-width: 100ch;
+    }
+  }
+}
