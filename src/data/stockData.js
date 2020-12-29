@@ -7,13 +7,13 @@ const formatItem = (data) => {
 				...stock,
 				symbol: piece.Symbol,
 				name: piece.Name,
-				bookValue: piece.BookValue,
-				yearHigh: piece['52WeekHigh'],
-				yearLow: piece['52WeekLow'],
+				bookValue: Number(piece.BookValue).toFixed(3),
+				yearHigh: Number(piece['52WeekHigh']).toFixed(3),
+				yearLow: Number(piece['52WeekLow']).toFixed(3),
 				exchange: piece.Exchange,
 				industry: piece.Industry,
-				peRatio: piece.PERatio,
-				pbRatio: piece.PriceToBookRatio,
+				peRatio: Number(piece.PERatio).toFixed(3),
+				pbRatio: Number(piece.PriceToBookRatio).toFixed(3),
 				description: piece.Description,
 				address: piece.Address,
 				employees: piece.FullTimeEmployees,
@@ -22,23 +22,18 @@ const formatItem = (data) => {
 			const dayInfo = piece['Global Quote'];
 			stock = {
 				...stock,
-				high: dayInfo['03. high'],
-				low: dayInfo['04. low'],
-				price: dayInfo['05. price'],
+				high: Number(dayInfo['03. high']).toFixed(3),
+				low: Number(dayInfo['04. low']).toFixed(3),
+				price: Number(dayInfo['05. price']).toFixed(3),
+				volume: Number(dayInfo['06. volume']).toFixed(3),
+				latestTradingDay: dayInfo['07. latest trading day'],
+				previousClose: Number(dayInfo['08. previous close']).toFixed(3),
+				change: Number(dayInfo['09. change']).toFixed(3),
+				changePercent: dayInfo['10. change percent'],
 			};
 		}
 	});
 	return stock;
-};
-
-export const getCompanyPhoto = (symbol) => {
-	const unsplashApi = `https://api.unsplash.com/search/photos/?query=${symbol}&client_id=${process.env.REACT_APP_UNSPLASH_API_KEY}`;
-
-	return fetch(unsplashApi)
-		.then((response) => response.json())
-		.then((data) => {
-			return data.results[0].urls.small;
-		});
 };
 
 export const getStock = (symbol) => {

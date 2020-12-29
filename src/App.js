@@ -1,25 +1,60 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.scss';
-import Stock from './components/Stock';
 import Form from './components/Form';
 import { getStock } from './data/stockData';
 import placeholderData from './utils/placeholderData';
-import StockDetails from './components/StockDetais';
+import StockDetails from './components/StockDetails';
 import StockPreview from './components/StockPreview';
+import Aside from './components/Aside';
+import Popup from './components/Popup';
+import stocksService from './server';
+
+//TODO: format numbers in stockData
 
 function App() {
-	const [stocks, setStocks] = useState([...placeholderData]);
+	const [stocks, setStocks] = useState([]);
 
 	// Form state
 	const [value, setValue] = useState('');
-	const [message, setMessage] = useState('');
+	const [message, setMessage] = useState({
+		isActive: false,
+		type: 'success',
+		text: '',
+	});
 
 	// Content control
 	const [shownPanel, setShownPanel] = useState('form');
-	const [isWatchlistShown, setIsWatchlistShown] = useState(true);
-	const [isPortfolioShown, setIsPortfolioShown] = useState(true);
 	const [stockPreview, setStockPreview] = useState(null);
 	const [stockToShow, setStockToShow] = useState(null);
+
+	useEffect(() => {
+		let stocksArray = [];
+
+		stocksService.getAllStocks().then((fetchedStocks) => {
+			fetchedStocks.forEach((fetchedStock) => {
+				getStock(fetchedStock.symbol)
+					.then((stock) => {
+						if (stock === undefined) {
+							return;
+						} else {
+							if (fetchedStock.amountHeld) {
+								stocksArray.push({
+									amountHeld: fetchedStock.amountHeld,
+									purchasePrice: fetchedStock.purchasePrice,
+									...stock,
+								});
+							} else {
+								stocksArray.push(stock);
+							}
+						}
+					})
+					.then(() => {
+						setStocks([...stocks, ...stocksArray]);
+					})
+					.catch((error) => console.error(error));
+			});
+		});
+	}, []);
 
 	const showStockDetails = (stock) => {
 		setShownPanel('details');
@@ -27,86 +62,74 @@ function App() {
 	};
 
 	const showStockPreview = (stock) => {
-		console.log(stock);
 		setStockPreview(stock);
 		setShownPanel('preview');
+	};
+
+	const showMessage = (type, text) => {
+		setTimeout(() => {
+			setMessage({ isActive: false, ...message });
+		}, 5000);
+
+		setMessage({
+			isActive: true,
+			type,
+			text,
+		});
 	};
 
 	const fetchSymbol = (e) => {
 		e.preventDefault();
 
 		if (!value) {
-			setMessage('Error: please provide a search symbol.');
+			showMessage('error', 'Please provide a search symbol');
 			return;
 		}
 
+		showMessage('success', 'Looking for stock symbol...');
+
 		getStock(value)
 			.then((stock) => {
-				setStocks([...stocks, stock]);
-				showStockPreview(stock);
+				if (stock === undefined) {
+					showMessage('error', 'Stock symbol not found');
+				} else {
+					showStockPreview(stock);
+					showMessage('success', 'Stock fetched successfully');
+				}
 			})
 			.catch((error) => console.error(error));
 
-		setMessage('');
 		setValue('');
 	};
 
+	const addToWatchlist = () => {
+		const existing = stocks.some(
+			(stock) => stock.symbol === stockPreview.symbol
+		);
+
+		if (existing) {
+			showMessage('error', 'Stock already in your watchlist');
+		} else {
+			setStocks([...stocks, stockPreview]);
+			showMessage('success', 'Stock added to watchlist');
+		}
+	};
+
+	const addToPortfolio = () => {};
+
 	return (
 		<div className='App'>
-			<aside>
-				<div id='portfolio'>
-					<header>
-						<h2>Portfolio</h2>
-						<button
-							type='button'
-							className='toggle-list'
-							onClick={() => setIsPortfolioShown(!isPortfolioShown)}
-						>
-							{isPortfolioShown ? 'Hide Portfolio' : 'Show Portfolio'}
-						</button>
-						<ul
-							style={{ display: `${isPortfolioShown ? 'block' : 'none'}` }}
-						></ul>
-					</header>
-				</div>
-				<div id='watchlist'>
-					<header>
-						<h2>Watchlist</h2>
-						<button
-							type='button'
-							className='toggle-list'
-							onClick={() => setIsWatchlistShown(!isWatchlistShown)}
-						>
-							{isWatchlistShown ? 'Hide Watchlist' : 'Show Watchlist'}
-						</button>
-					</header>
-					<ul style={{ display: `${isWatchlistShown ? 'block' : 'none'}` }}>
-						{!stocks && <p>Loading data...</p>}
-						{stocks &&
-							stocks.map((stock) => (
-								<Stock
-									key={stock.symbol}
-									stock={stock}
-									showStockDetais={showStockDetails}
-								/>
-							))}
-					</ul>
-				</div>
-				<div className='add-stock-wrapper'>
-					<button
-						type='button'
-						className='add-stock-button'
-						onClick={() => setShownPanel('form')}
-					>
-						+
-					</button>
-				</div>
-			</aside>
+			<Popup message={message} />
+			<Aside
+				stocks={stocks}
+				showStockDetails={showStockDetails}
+				setShownPanel={setShownPanel}
+			/>
 			<section>
 				{shownPanel === 'details' ? (
 					<StockDetails stock={stockToShow} />
 				) : shownPanel === 'preview' ? (
-					<StockPreview stock={stockPreview} />
+					<StockPreview stock={stockPreview} addToWatchlist={addToWatchlist} />
 				) : (
 					<Form
 						value={value}

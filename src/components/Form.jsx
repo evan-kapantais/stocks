@@ -7,12 +7,14 @@ const Form = (props) => {
 					<input
 						type='search'
 						placeholder='Search stock symbol...'
+						id='search-stock-input'
 						value={props.value}
 						onChange={(e) => props.setValue(e.target.value)}
 					/>
-					<button type='submit'>Search</button>
+					<button type='submit' className='main-button'>
+						Search
+					</button>
 				</form>
-				<p>{props.message}</p>
 			</div>
 		</div>
 	);
