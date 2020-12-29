@@ -11,13 +11,18 @@ const getStockById = (id) => {
 };
 
 const postStock = (stock) => {
-	return axios.post(baseUrl).then((res) => res.data);
+	return axios.post(baseUrl, stock).then((res) => res.data);
+};
+
+const updateStock = (id, newStock) => {
+	return axios.put(`${baseUrl}/${id}`, newStock).then((res) => res.data);
 };
 
 const stocksService = {
 	getAllStocks,
 	getStockById,
 	postStock,
+	updateStock,
 };
 
 export default stocksService;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.scss';
 import Form from './components/Form';
-import { getStock } from './data/stockData';
+import getStock from './data/stockData';
 import placeholderData from './utils/placeholderData';
 import StockDetails from './components/StockDetails';
 import StockPreview from './components/StockPreview';
@@ -10,6 +10,8 @@ import Popup from './components/Popup';
 import stocksService from './server';
 
 //TODO: format numbers in stockData
+// TODO: pipeline: fetch both data types -> store stock info wis DB -> when focused again only fetch day info
+// TODO: replace seatch field with search and recommendations (https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=BA&apikey=demo, https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=tesco&apikey=demo)
 
 function App() {
 	const [stocks, setStocks] = useState([]);
@@ -28,37 +30,14 @@ function App() {
 	const [stockToShow, setStockToShow] = useState(null);
 
 	useEffect(() => {
-		let stocksArray = [];
-
-		stocksService.getAllStocks().then((fetchedStocks) => {
-			fetchedStocks.forEach((fetchedStock) => {
-				getStock(fetchedStock.symbol)
-					.then((stock) => {
-						if (stock === undefined) {
-							return;
-						} else {
-							if (fetchedStock.amountHeld) {
-								stocksArray.push({
-									amountHeld: fetchedStock.amountHeld,
-									purchasePrice: fetchedStock.purchasePrice,
-									...stock,
-								});
-							} else {
-								stocksArray.push(stock);
-							}
-						}
-					})
-					.then(() => {
-						setStocks([...stocks, ...stocksArray]);
-					})
-					.catch((error) => console.error(error));
-			});
+		stocksService.getAllStocks().then((dbStocks) => {
+			setStocks([...dbStocks]);
 		});
 	}, []);
 
-	const showStockDetails = (stock) => {
+	const showStockDetails = (symbol) => {
 		setShownPanel('details');
-		setStockToShow(stock);
+		setStockToShow(symbol);
 	};
 
 	const showStockPreview = (stock) => {
@@ -91,7 +70,7 @@ function App() {
 		getStock(value)
 			.then((stock) => {
 				if (stock === undefined) {
-					showMessage('error', 'Stock symbol not found');
+					showMessage('error', 'Stock symbol not found OR API limit reached');
 				} else {
 					showStockPreview(stock);
 					showMessage('success', 'Stock fetched successfully');
@@ -110,12 +89,12 @@ function App() {
 		if (existing) {
 			showMessage('error', 'Stock already in your watchlist');
 		} else {
-			setStocks([...stocks, stockPreview]);
-			showMessage('success', 'Stock added to watchlist');
+			stocksService.postStock(stockPreview).then(() => {
+				setStocks([...stocks, stockPreview]);
+				showMessage('success', 'Stock added to watchlist');
+			});
 		}
 	};
-
-	const addToPortfolio = () => {};
 
 	return (
 		<div className='App'>
@@ -127,9 +106,17 @@ function App() {
 			/>
 			<section>
 				{shownPanel === 'details' ? (
-					<StockDetails stock={stockToShow} />
+					<StockDetails
+						stocks={stocks}
+						setStocks={setStocks}
+						symbol={stockToShow}
+					/>
 				) : shownPanel === 'preview' ? (
-					<StockPreview stock={stockPreview} addToWatchlist={addToWatchlist} />
+					<StockPreview
+						stock={stockPreview}
+						addToWatchlist={addToWatchlist}
+						setShownPanel={setShownPanel}
+					/>
 				) : (
 					<Form
 						value={value}

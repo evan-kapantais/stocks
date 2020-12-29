@@ -36,7 +36,7 @@ const formatItem = (data) => {
 	return stock;
 };
 
-export const getStock = (symbol) => {
+const getStock = (symbol) => {
 	const dayApi = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 	const infoApi = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
@@ -47,3 +47,5 @@ export const getStock = (symbol) => {
 		.then((data) => formatItem(data))
 		.catch((error) => console.error(error.message));
 };
+
+export default getStock;

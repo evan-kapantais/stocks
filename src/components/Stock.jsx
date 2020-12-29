@@ -2,14 +2,18 @@ import React from 'react';
 
 const Stock = ({ stock, showStockDetais }) => {
 	return (
-		<li className='stock' onClick={() => showStockDetais(stock)}>
+		<li className='stock' onClick={() => showStockDetais(stock.symbol)}>
 			<div className='stock-meta'>
-				<h3>{stock.symbol}</h3>
+				<h3>{stock.symbol.toUpperCase()}</h3>
 				<h4>{stock.name}</h4>
 			</div>
-			<p>
-				<b>${Number(stock.price).toFixed(2)}</b>
-			</p>
+			{stock.amountHeld && (
+				<div className='stock-held'>
+					<p>
+						{stock.amountHeld} shares purchased at $ {stock.purchasePrice}
+					</p>
+				</div>
+			)}
 		</li>
 	);
 };

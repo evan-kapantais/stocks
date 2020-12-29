@@ -1,8 +1,7 @@
 const Form = (props) => {
 	return (
 		<div className='form-wrapper'>
-			<div>
-				<h1>Add Stock</h1>
+			<div className='form-container'>
 				<form id='search-form' onSubmit={props.fetchSymbol}>
 					<input
 						type='search'

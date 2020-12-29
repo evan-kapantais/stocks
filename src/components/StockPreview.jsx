@@ -104,11 +104,14 @@ const AddStock = ({ stock, addToWatchlist }) => {
 				<label htmlFor='price'>Purchase Price</label>
 				<input type='number' />
 			</form>
-			<button className='add-watchlist-button' onClick={addToWatchlist}>
+			<button
+				className='main-button add-watchlist-button'
+				onClick={addToWatchlist}
+			>
 				Add To Watchlist
 			</button>
 			<button
-				className='add-portfolio-button'
+				className='main-button add-portfolio-button'
 				onClick={() => setPortfolio(!portfolio)}
 			>
 				Add To Portfolio
@@ -117,7 +120,7 @@ const AddStock = ({ stock, addToWatchlist }) => {
 	);
 };
 
-const StockPreview = ({ stock, addToWatchlist }) => {
+const StockPreview = ({ stock, addToWatchlist, setShownPanel }) => {
 	const [activeTab, setActiveTab] = useState('overview');
 
 	return (
@@ -148,10 +151,19 @@ const StockPreview = ({ stock, addToWatchlist }) => {
 				</div>
 			</nav>
 			<header>
-				<h1>
-					{stock.name} ({stock.symbol})
-				</h1>
-				<h2>{stock.industry}</h2>
+				<div>
+					<h1>
+						{stock.name} ({stock.symbol})
+					</h1>
+					<h2>{stock.industry}</h2>
+				</div>
+				<button
+					type='button'
+					className='main-button'
+					onClick={() => setShownPanel('form')}
+				>
+					New Search
+				</button>
 			</header>
 			<main>
 				{activeTab === 'overview' && <Overview stock={stock} />}

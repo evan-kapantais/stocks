@@ -30,7 +30,7 @@ ol {
   color: #fff;
   font-weight: 600;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1.5rem;
   cursor: pointer;
   transition: all 200ms ease;
   
@@ -109,8 +109,12 @@ aside {
 
 #search-form {
   margin-bottom: 2rem;
+ 
+  input {
+    display: inline-block;
+    margin: 0 1rem 0 0;
+  }
 }
-
 input,
 label {
   display: block;
@@ -138,18 +142,19 @@ input:not(:last-of-type) {
   padding: 1rem;
   border-top: 1px solid lightgrey;
   border-bottom: 1px solid lightgrey;
-  min-height: 100px;
-  display: flex;
-  justify-content: space-between;
   cursor: pointer;
   user-select: none;
 
   &:not(:last-of-type) {
     border-bottom: none;
   }
-  
-  h3  {
+
+  h3 {
     margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-top: 1rem;
   }
   
   h4 {
@@ -159,6 +164,10 @@ input:not(:last-of-type) {
 
   &:hover{
     background: rgb(244, 244, 244);
+  }
+
+  .stock-held {
+    // text-align: right;
   }
 }
 
@@ -289,6 +298,9 @@ input:not(:last-of-type) {
 
   header {
     margin-bottom: 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
 
     h1 {
       font-size: calc(2vw + 10px);
