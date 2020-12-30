@@ -1,6 +1,6 @@
 const Table = ({ title, data }) => {
 	return (
-		<table>
+		<table className='preview-table'>
 			<thead>
 				<tr>
 					<th>{title}</th>

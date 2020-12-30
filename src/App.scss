@@ -1,3 +1,6 @@
+$light-color: #fff5e1;
+$accent-color: #ffdd98;
+
 * {
   position: relative;
   margin: 0;
@@ -37,23 +40,6 @@ ol {
   &:hover {
     background-color: #fff;
     color: #111;
-  }
-}
-
-#search-stock-input {
-  width: 300px;
-  border: none;
-  outline: none;
-  border-bottom: 2px solid rgb(168, 168, 168);
-  box-shadow: none;
-  border-radius: 0;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  transition: all 200ms ease;
-
-  
-  &:focus {
-    border-bottom: 2px solid #111;
   }
 }
 
@@ -106,15 +92,67 @@ aside {
   border-right: 1px solid rgba($color: #000000, $alpha: 0.2);
 }
 
+// Form
+
+.form-wrapper {
+  width: 100%;
+  height: 100%;
+  padding-top: 20%;
+}
+
+.form-container {
+  width: 40%;
+  min-width: 400px;
+  margin: 0 auto;
+}
+
+.note {
+  margin: 1rem 0.5rem;
+  font-size: 0.85rem;
+}
 
 #search-form {
-  margin-bottom: 2rem;
- 
-  input {
-    display: inline-block;
-    margin: 0 1rem 0 0;
+  margin-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+#search-stock-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid rgb(168, 168, 168);
+  box-shadow: none;
+  border-radius: 0;
+  font-size: 1rem;
+  margin-right: 1rem;
+  transition: all 200ms ease;
+  
+  &:focus {
+    border-bottom: 2px solid #111;
   }
 }
+
+// Search matches
+
+.search-match-item {
+  display: flex;
+  justify-content: space-between;
+  user-select: none;
+  cursor: pointer;
+  padding: 1rem 0.5rem;
+  transition: all 100ms ease;
+
+  &:nth-child(even) {
+    background: $light-color;
+  }
+
+  &:hover {
+    background: $accent-color;
+  }
+}
+
 input,
 label {
   display: block;
@@ -164,10 +202,6 @@ input:not(:last-of-type) {
 
   &:hover{
     background: rgb(244, 244, 244);
-  }
-
-  .stock-held {
-    // text-align: right;
   }
 }
 
@@ -262,16 +296,6 @@ input:not(:last-of-type) {
   &:hover:before {
     opacity: 1;
   }
-}
-
-// Form
-
-.form-wrapper {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 // Tabs
@@ -394,7 +418,7 @@ input:not(:last-of-type) {
   color: red;
 }
 
-table {
+.preview-table {
   min-width: 300px;
   border-radius: 2px;
   box-shadow: 0 0 10px rgb(234, 234, 234);
