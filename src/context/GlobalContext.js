@@ -52,7 +52,7 @@ export const GlobalProvider = ({ children }) => {
 	const fetchStockOverview = (symbol) => {
 		const infoApi = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
-		fetch(infoApi)
+		return fetch(infoApi)
 			.then((response) => response.json())
 			.then((quote) => formatStockOverview(quote))
 			.catch((error) => console.error(error));
@@ -68,19 +68,12 @@ export const GlobalProvider = ({ children }) => {
 	};
 
 	const addToWatchlist = async (symbol) => {
-		try {
-			const stockOverview = await fetchStockOverview(symbol);
-			const formattedStockOverview = formatStockOverview(stockOverview);
-
-			const storedStock = await stocksService.postStock(formattedStockOverview);
-
-			dispatch({
-				type: 'ADD_TO_WATCHLIST',
-				payload: storedStock,
-			});
-		} catch (error) {
-			console.error(error);
-		}
+		fetchStockOverview(symbol)
+			.then((stock) => stocksService.postStock(stock))
+			.then((storedStock) =>
+				dispatch({ type: 'ADD_TO_WATCHLIST', payload: storedStock })
+			)
+			.catch((error) => console.error(error));
 	};
 
 	const addToPortfolio = async (symbol, amount, price) => {

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 
-const Stock = ({ stock, showStockDetais }) => {
+const Stock = ({ stock }) => {
 	const { deleteDbStock, setDisplay } = useContext(GlobalContext);
 
 	return (

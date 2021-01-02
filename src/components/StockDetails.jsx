@@ -129,7 +129,9 @@ const StockDetails = () => {
 
 	useEffect(() => {
 		fetchStockQuote(display.stock.symbol).then((res) => setQuote(res));
-	}, []);
+	}, [display]);
+
+	console.log(quote);
 
 	return (
 		<div id='stock-preview-wrapper'>

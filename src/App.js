@@ -26,7 +26,7 @@ function App() {
 			<Aside />
 			<section>
 				{display.type === 'form' && <Form />}
-				{display.type === 'stock' && <StockDetails stock={display.stock} />}
+				{display.type === 'stock' && <StockDetails />}
 			</section>
 		</div>
 	);
