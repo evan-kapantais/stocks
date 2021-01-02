@@ -97,12 +97,12 @@ aside {
 .form-wrapper {
   width: 100%;
   height: 100%;
-  padding-top: 20%;
+  padding-top: 15%;
 }
 
 .form-container {
   width: 40%;
-  min-width: 400px;
+  min-width: 500px;
   margin: 0 auto;
 }
 
@@ -137,7 +137,10 @@ aside {
 // Search matches
 
 .search-match-item {
-  display: flex;
+  summary {
+    display: flex;
+  }
+
   justify-content: space-between;
   user-select: none;
   cursor: pointer;
@@ -150,6 +153,26 @@ aside {
 
   &:hover {
     background: $accent-color;
+  }
+}
+
+#stockholder-form {
+
+  input[type=radio] {
+    margin-right: 0.2rem;
+    box-shadow: none;
+  }
+
+  .radio-group {
+    display: flex;
+
+    div {
+      display: flex;
+    }
+
+    div:first-child {
+      margin-right: 1rem;
+    }
   }
 }
 
@@ -183,6 +206,30 @@ input:not(:last-of-type) {
   cursor: pointer;
   user-select: none;
 
+  .stock-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .delete-button {
+    background: none;
+    outline: none;
+    border: none;
+    cursor: pointer;
+
+    &:before {
+      content: 'Remove';
+      margin-right: 0.5rem;
+      opacity: 0;
+      transition: opacity 200ms ease;
+    }
+
+    &:hover:before {
+      opacity: 1;
+    }
+  }
+
   &:not(:last-of-type) {
     border-bottom: none;
   }
@@ -197,15 +244,25 @@ input:not(:last-of-type) {
   
   h4 {
     color: grey;
-    max-width: 25ch;
+    max-width: 20ch;
   }
 
-  &:hover{
-    background: rgb(244, 244, 244);
-  }
+  // &:hover{
+  //   background: $accent-color;
+  // }
 }
 
 // Message popup
+
+@keyframes popup-in {
+  from {right: -300px}
+  to {right: 0}
+}
+
+@keyframes popup-out {
+  from {right: 0}
+  to {right: -300px}
+}
 
 #message-popup {
   position: fixed;
@@ -215,6 +272,11 @@ input:not(:last-of-type) {
   padding: 1.5rem 2rem;
   transition: all 400ms ease;
   z-index: 99;
+
+  &.message-popup-success,
+  &.message-popup-error {
+    animation: popup-in 400ms ease forwards, popup-out 400ms 3600ms ease forwards;
+  }
   
   &.message-popup-success {
     background: lightseagreen;

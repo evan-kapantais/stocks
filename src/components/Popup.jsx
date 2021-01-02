@@ -1,4 +1,9 @@
-const Popup = ({ message }) => {
+import { useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
+
+const Popup = () => {
+	const { message } = useContext(GlobalContext);
+
 	return (
 		<div
 			id='message-popup'

@@ -1,21 +1,33 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
 import SearchResult from './SearchResult';
 
-const Form = (props) => {
+const Form = () => {
 	const [searchMatches, setSearchMatches] = useState(null);
 	const [inputValue, setInputValue] = useState('');
+
+	const { fetchSymbolMatches, setMessage } = useContext(GlobalContext);
 
 	const fetchOptions = (e) => {
 		e.preventDefault();
 
-		const endpoint = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${inputValue}&apikey=${process.env.REACT_APP_API_KEY}`;
+		if (!inputValue) {
+			setMessage('error', 'Please provide a search symbol');
+			return;
+		}
 
-		fetch(endpoint)
-			.then((results) => results.json())
-			.then((matches) => {
+		setMessage('success', 'Searching for matches...');
+
+		fetchSymbolMatches(inputValue).then((matches) => {
+			if (matches.bestMatches.length === 0) {
+				setMessage('error', 'No matches found');
+			} else {
+				setMessage('success', 'Matches fetched.');
 				setSearchMatches(matches.bestMatches);
-				setInputValue('');
-			});
+			}
+		});
+
+		setInputValue('');
 	};
 
 	return (
@@ -39,8 +51,6 @@ const Form = (props) => {
 					</p>
 				)}
 				<ul id='search-matches'>
-					{!searchMatches ||
-						(searchMatches.length === 0 && <p>No matches found.</p>)}
 					{searchMatches?.map((match) => (
 						<SearchResult key={match['1. symbol']} match={match} />
 					))}
