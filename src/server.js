@@ -18,6 +18,10 @@ const deleteStock = (id) => {
 	return axios.delete(`${baseUrl}/:id`).then((res) => res.data);
 };
 
+const updateStock = (id) => {
+	return axios.put(`${baseUrl}/:id`).then((res) => res.data);
+};
+
 const stocksService = {
 	getAllStocks,
 	getStockById,

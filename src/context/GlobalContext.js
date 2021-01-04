@@ -67,7 +67,7 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error));
 	};
 
-	const addToWatchlist = async (symbol) => {
+	const addToWatchlist = (symbol) => {
 		fetchStockOverview(symbol)
 			.then((stock) => stocksService.postStock(stock))
 			.then((storedStock) =>
@@ -76,25 +76,22 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error));
 	};
 
-	const addToPortfolio = async (symbol, amount, price) => {
-		try {
-			const stockOverview = await fetchStockOverview(symbol);
-			const formattedStockOverview = formatStockOverview(stockOverview);
-			const shareholderStock = {
-				...formattedStockOverview,
-				amountHeld: amount,
-				purchasePrice: price,
-			};
-
-			const storedStock = await stocksService.postStock(shareholderStock);
-
-			dispatch({
-				type: 'ADD_TO_WATCHLIST',
-				payload: storedStock,
-			});
-		} catch (error) {
-			console.error(error);
-		}
+	const addToPortfolio = (symbol, amount, price) => {
+		fetchStockOverview(symbol)
+			.then((response) => {
+				return stocksService.postStock({
+					...response,
+					amountHeld: amount,
+					purchasePrice: price,
+				});
+			})
+			.then((storedStock) => {
+				dispatch({
+					type: 'ADD_TO_WATCHLIST',
+					payload: storedStock,
+				});
+			})
+			.catch((error) => console.error(error));
 	};
 
 	const deleteDbStock = async (id) => {

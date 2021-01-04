@@ -12,6 +12,7 @@ import { GlobalContext } from './context/GlobalContext';
 // TODO: !!!IMPORTANT prevent duplicates (front/back)
 // TODO: store/show asset type in watchlist/portfolio
 // TODO: store/show amount held in watchlist/portfolio
+// TODO: find a way to limit api calls to 5 per minute
 
 function App() {
 	const { getDbStocks, display } = useContext(GlobalContext);

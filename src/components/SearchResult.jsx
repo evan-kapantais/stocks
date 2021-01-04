@@ -12,16 +12,6 @@ const SearchResult = ({ match }) => {
 
 	const matchSymbol = match['1. symbol'];
 
-	const handleClick = () => {
-		const existingSymbol = stocks.some((stock) => stock.symbol === matchSymbol);
-
-		if (existingSymbol) {
-			setMessage('error', 'Stock already in your watchlist');
-		} else {
-			addToWatchlist(matchSymbol);
-		}
-	};
-
 	const submitForm = (e) => {
 		e.preventDefault();
 
@@ -37,6 +27,8 @@ const SearchResult = ({ match }) => {
 					'error',
 					'Please enter a positive share mount OR add stock to watchlist instead'
 				);
+			} else if (price <= 0) {
+				return setMessage('error', 'Please enter a positive purchase price');
 			}
 
 			addToPortfolio(matchSymbol, amount, price);

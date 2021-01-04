@@ -86,42 +86,6 @@ const Financials = ({ quote, data }) => {
 	);
 };
 
-const AddStock = ({ stock, addToWatchlist }) => {
-	const [portfolio, setPortfolio] = useState(false);
-	const [purchasePrice, setPurchasePrice] = useState(0);
-	const [amount, setAmount] = useState(0);
-
-	const className = portfolio ? 'shown' : '';
-
-	const addToPortfolio = () => {
-		const currentPrice = stock.price;
-	};
-
-	return (
-		<div className='tab' id='add-stock-tab'>
-			<h2 className='preview-section-title'>Add Stock</h2>
-			<form id='portfolio-form' className={className}>
-				<label htmlFor='amount'>Amount Held</label>
-				<input type='number' />
-				<label htmlFor='price'>Purchase Price</label>
-				<input type='number' />
-			</form>
-			<button
-				className='main-button add-watchlist-button'
-				onClick={addToWatchlist}
-			>
-				Add To Watchlist
-			</button>
-			<button
-				className='main-button add-portfolio-button'
-				onClick={() => setPortfolio(!portfolio)}
-			>
-				Add To Portfolio
-			</button>
-		</div>
-	);
-};
-
 const StockDetails = () => {
 	const [activeTab, setActiveTab] = useState('overview');
 	const [quote, setQuote] = useState({});
@@ -130,8 +94,6 @@ const StockDetails = () => {
 	useEffect(() => {
 		fetchStockQuote(display.stock.symbol).then((res) => setQuote(res));
 	}, [display]);
-
-	console.log(quote);
 
 	return (
 		<div id='stock-preview-wrapper'>
@@ -151,13 +113,6 @@ const StockDetails = () => {
 					>
 						Financials
 					</button>
-					<button
-						type='button'
-						className='tab-button'
-						onClick={() => setActiveTab('add')}
-					>
-						Add Stock
-					</button>
 				</div>
 			</nav>
 			<header>
@@ -171,7 +126,6 @@ const StockDetails = () => {
 				{quote && activeTab === 'quote' && (
 					<Financials quote={quote} data={display.stock} />
 				)}
-				{activeTab === 'add' && <AddStock stock={display.stock} />}
 			</main>
 		</div>
 	);
