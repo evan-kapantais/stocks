@@ -36,7 +36,6 @@ const ContextReducer = (state, action) => {
 				stocks: [...action.payload],
 			};
 		case 'DELETE_DB_STOCK':
-			console.log(action.payload);
 			return {
 				...state,
 				stocks: state.stocks.filter((stock) => stock.id !== action.payload),

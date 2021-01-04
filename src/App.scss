@@ -1,5 +1,6 @@
 $light-color: #fff5e1;
 $accent-color: #ffdd98;
+$focus-color: #00aaff;
 
 * {
   position: relative;
@@ -29,7 +30,9 @@ ol {
 
 .main-button {
   background: #111;
-  border: 2px solid #111;
+  border: none;
+  border-radius: 20px;
+  outline: none;
   color: #fff;
   font-weight: 600;
   font-size: 1rem;
@@ -38,8 +41,7 @@ ol {
   transition: all 200ms ease;
   
   &:hover {
-    background-color: #fff;
-    color: #111;
+    background-color: $focus-color;
   }
 }
 
@@ -120,35 +122,25 @@ aside {
 
 #search-stock-input {
   width: 100%;
-  border: none;
+  border: 2px solid rgba(17, 17, 17, 0.511);
   outline: none;
-  border-bottom: 2px solid rgb(168, 168, 168);
   box-shadow: none;
-  border-radius: 0;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
   font-size: 1rem;
   margin-right: 1rem;
   transition: all 200ms ease;
   
   &:focus {
-    border-bottom: 2px solid #111;
+    border-color: $focus-color;
   }
 }
 
 // Search matches
 
 .search-match-item {
-  details[open] {
-    background: $accent-color;
-  }
-  
-  summary {
-    display: flex;
-  }
-
-  justify-content: space-between;
   user-select: none;
   cursor: pointer;
-  padding: 1rem 0.5rem;
   transition: all 100ms ease;
 
   &:nth-child(even) {
@@ -158,6 +150,27 @@ aside {
   &:hover {
     background: $accent-color;
   }
+
+  details[open] {
+    background: $accent-color;
+  }
+
+  form {
+    padding: 1rem 0.5rem;
+  }
+
+  .radio-group,
+  .holder-group {
+    margin-bottom: 1rem;
+  }
+
+  summary {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0.5rem;
+  }
+
+
 }
 
 #stockholder-form {
