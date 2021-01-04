@@ -207,9 +207,12 @@ input:not(:last-of-type) {
   padding: 1rem;
   border-left: 5px solid $accent-color;
   background: #fff;
-  cursor: pointer;
   user-select: none;
   transition: all 100ms ease;
+  
+  .stock-meta {
+    cursor: pointer;
+  }
   
   &:not(:last-of-type) {
     margin-bottom: 1rem;

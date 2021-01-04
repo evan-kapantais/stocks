@@ -5,9 +5,9 @@ const Stock = ({ stock }) => {
 	const { deleteDbStock, setDisplay } = useContext(GlobalContext);
 
 	return (
-		<li className='stock' onClick={() => setDisplay('stock', stock)}>
+		<li className='stock'>
 			<div className='stock-header'>
-				<div className='stock-meta'>
+				<div className='stock-meta' onClick={() => setDisplay('stock', stock)}>
 					<h3>{stock.symbol.toUpperCase()}</h3>
 					<h4>{stock.name}</h4>
 				</div>
