@@ -237,6 +237,21 @@ input:not(:last-of-type) {
   .stock-meta {
     cursor: pointer;
   }
+
+  .stock-heading {
+    h3 {
+      display: inline-block;
+      margin-right: 0.5rem;
+    }
+
+    .positive-change {
+      color: lightseagreen;
+    }
+
+    .negative-change {
+      color: tomato;
+    }
+  }
   
   &:not(:last-of-type) {
     margin-bottom: 1rem;

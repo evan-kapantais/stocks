@@ -45,8 +45,6 @@ const Overview = ({ stock }) => {
 };
 
 const Financials = ({ quote, data }) => {
-	// const formattedChangePercent = Number(quote.changePercent.slice(0, -1));
-
 	const latestTradingDayData = {
 		High: `$ ${Number(quote.high).toFixed(2)}`,
 		Low: `$ ${Number(quote.low).toFixed(2)}`,
@@ -88,7 +86,7 @@ const Financials = ({ quote, data }) => {
 
 const StockDetails = () => {
 	const [activeTab, setActiveTab] = useState('overview');
-	const [quote, setQuote] = useState({});
+	const [quote, setQuote] = useState(null);
 	const { display, fetchStockQuote } = useContext(GlobalContext);
 
 	useEffect(() => {
