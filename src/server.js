@@ -7,7 +7,7 @@ const getAllStocks = async () => {
 };
 
 const getStockById = (id) => {
-	return axios.get(`${baseUrl}/:id`).then((res) => res.data);
+	return axios.get(`${baseUrl}/${id}`).then((res) => res.data);
 };
 
 const postStock = (stock) => {
@@ -15,11 +15,11 @@ const postStock = (stock) => {
 };
 
 const deleteStock = (id) => {
-	return axios.delete(`${baseUrl}/:id`).then((res) => res.data);
+	return axios.delete(`${baseUrl}/${id}`).then((res) => res.data);
 };
 
-const updateStock = (id) => {
-	return axios.put(`${baseUrl}/:id`).then((res) => res.data);
+const updateStock = (id, newObject) => {
+	return axios.put(`${baseUrl}/${id}`, newObject).then((res) => res.data);
 };
 
 const stocksService = {
@@ -27,6 +27,7 @@ const stocksService = {
 	getStockById,
 	postStock,
 	deleteStock,
+	updateStock,
 };
 
 export default stocksService;

@@ -4,8 +4,6 @@ import { GlobalContext } from '../context/GlobalContext';
 const Stock = ({ stock }) => {
 	const { deleteDbStock, setDisplay } = useContext(GlobalContext);
 
-	console.log(stock);
-
 	return (
 		<li className='stock'>
 			<div className='stock-header'>

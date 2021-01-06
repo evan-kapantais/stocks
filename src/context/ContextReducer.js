@@ -40,6 +40,9 @@ const ContextReducer = (state, action) => {
 				...state,
 				stocks: state.stocks.filter((stock) => stock.id !== action.payload),
 			};
+		case 'UPDATE_STOCK':
+			console.log(action.payload);
+			break;
 		default:
 			return state;
 	}

@@ -25,17 +25,16 @@ export const GlobalProvider = ({ children }) => {
 		});
 	};
 
-	const getDbStocks = async () => {
-		try {
-			const dbStocks = await stocksService.getAllStocks();
-
-			dispatch({
-				type: 'GET_DB_STOCKS',
-				payload: dbStocks,
-			});
-		} catch (error) {
-			console.error(error);
-		}
+	const getDbStocks = () => {
+		stocksService
+			.getAllStocks()
+			.then((stocks) => {
+				dispatch({
+					type: 'GET_DB_STOCKS',
+					payload: stocks,
+				});
+			})
+			.catch((error) => console.error(error));
 	};
 
 	const fetchSymbolMatches = async (symbol) => {
@@ -61,9 +60,17 @@ export const GlobalProvider = ({ children }) => {
 	const fetchStockQuote = (symbol) => {
 		const quoteApi = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
+		const foundStock = state.stocks.find((item) => item.symbol === symbol);
+
 		return fetch(quoteApi)
 			.then((response) => response.json())
-			.then((quote) => formatStockQuote(quote))
+			.then((quote) => {
+				const formattedQuote = formatStockQuote(quote);
+				return stocksService.updateStock(foundStock.id, {
+					...foundStock,
+					...formattedQuote,
+				});
+			})
 			.catch((error) => console.error(error));
 	};
 

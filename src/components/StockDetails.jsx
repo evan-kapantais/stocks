@@ -45,14 +45,14 @@ const Overview = ({ stock }) => {
 };
 
 const Financials = ({ quote, data }) => {
-	const formattedChangePercent = Number(quote.changePercent.slice(0, -1));
+	// const formattedChangePercent = Number(quote.changePercent.slice(0, -1));
 
 	const latestTradingDayData = {
 		High: `$ ${Number(quote.high).toFixed(2)}`,
 		Low: `$ ${Number(quote.low).toFixed(2)}`,
 		'Previous Close': `$ ${quote.previousClose}`,
 		Change: quote.change,
-		'Change %': formattedChangePercent,
+		'Change %': quote.changePercent,
 	};
 
 	const keyData = {
@@ -70,11 +70,11 @@ const Financials = ({ quote, data }) => {
 				<b>$ {Number(quote.price).toFixed(2)}</b>
 				<span
 					className={`stock-change ${
-						formattedChangePercent > 0 ? 'positive-change' : 'negative-change'
+						quote.changePercent > 0 ? 'positive-change' : 'negative-change'
 					}`}
 				>
-					{formattedChangePercent > 0 ? '↑' : '↓'}
-					{formattedChangePercent.toFixed(3)} %
+					{quote.changePercent > 0 ? '↑' : '↓'}
+					{quote.changePercent.toFixed(3)} %
 				</span>
 			</p>
 			<i className='stock-day'>Latest trading day: {quote.latestTradingDay}</i>

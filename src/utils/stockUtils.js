@@ -28,7 +28,7 @@ export const formatStockQuote = (stock) => {
 		latestTradingDay: quote['07. latest trading day'],
 		previousClose: Number(quote['08. previous close']).toFixed(3),
 		change: Number(quote['09. change']).toFixed(3),
-		changePercent: quote['10. change percent'],
+		changePercent: Number(quote['10. change percent'].slice(0, -1)),
 	};
 
 	return formatted;
