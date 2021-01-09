@@ -5,7 +5,7 @@ import Stock from './Stock';
 const Watchlist = () => {
 	const { stocks } = useContext(GlobalContext);
 
-	const watchlist = stocks.filter((stock) => !stock.amountHeld);
+	const watchlist = stocks.filter((stock) => !stock.portfolio);
 
 	return (
 		<details id='watchlist' open>
@@ -16,7 +16,9 @@ const Watchlist = () => {
 			<ul>
 				{!stocks && <p>Loading your watchlist...</p>}
 				{watchlist &&
-					watchlist.map((stock) => <Stock key={stock.symbol} stock={stock} />)}
+					watchlist.map((stock) => (
+						<Stock key={stock.overview.symbol} stock={stock} />
+					))}
 			</ul>
 		</details>
 	);

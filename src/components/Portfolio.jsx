@@ -5,7 +5,7 @@ import { GlobalContext } from '../context/GlobalContext';
 const Portfolio = (props) => {
 	const { stocks } = useContext(GlobalContext);
 
-	const portfolio = stocks.filter((stock) => stock.amountHeld);
+	const portfolio = stocks.filter((stock) => stock.portfolio);
 
 	return (
 		<details id='portfolio' open>
@@ -17,7 +17,7 @@ const Portfolio = (props) => {
 				{!stocks && <p>Loading your portfolio...</p>}
 				{portfolio.map((stock) => (
 					<Stock
-						key={stock.symbol}
+						key={stock.overview.symbol}
 						stock={stock}
 						showStockDetais={props.showStockDetails}
 					/>
