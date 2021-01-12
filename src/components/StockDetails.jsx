@@ -19,9 +19,6 @@ const StockDetails = () => {
 	const { display, fetchStockQuote, getDbStocks } = useContext(GlobalContext);
 
 	useEffect(() => {
-		// TODO: use quote regardless. if you use the display.stock as default, the recurrent updates are useless and not being reflected in the stock info.
-		// TODO: need to update the Stock object (display is proof), otherwise this will keep fetching the quote when it already has
-
 		if (display.stock.quote) {
 			setStock(display.stock);
 			setIsPending(false);
@@ -52,7 +49,7 @@ const StockDetails = () => {
 		return () => {
 			abortController.abort();
 		};
-	}, [display]);
+	}, []);
 
 	const summary = `${display.stock.overview.description.slice(0, 1000)}...`;
 
