@@ -49,6 +49,7 @@ export const GlobalProvider = ({ children }) => {
 	};
 
 	const fetchStockOverview = (symbol) => {
+		console.log(`Context: Fetching ${symbol} overview.`);
 		const infoApi = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
 		return fetch(infoApi)
@@ -58,9 +59,13 @@ export const GlobalProvider = ({ children }) => {
 	};
 
 	const fetchStockQuote = (symbol) => {
+		console.log(`Context: Fetching ${symbol} quote.`);
+
 		const quoteApi = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
-		const foundStock = state.stocks.find((item) => item.symbol === symbol);
+		const foundStock = state.stocks.find(
+			(item) => item.overview.symbol === symbol
+		);
 
 		return fetch(quoteApi)
 			.then((response) => response.json())
@@ -68,15 +73,23 @@ export const GlobalProvider = ({ children }) => {
 				const formattedQuote = formatStockQuote(quote);
 				return stocksService.updateStock(foundStock.id, {
 					...foundStock,
-					...formattedQuote,
+					quote: { ...formattedQuote },
 				});
 			})
+			.then(() => getDbStocks())
 			.catch((error) => console.error(error));
 	};
 
 	const addToWatchlist = (symbol) => {
 		fetchStockOverview(symbol)
-			.then((stock) => stocksService.postStock(stock))
+			.then((stock) => {
+				const newStock = {
+					overview: {
+						...stock,
+					},
+				};
+				return stocksService.postStock(newStock);
+			})
 			.then((storedStock) =>
 				dispatch({ type: 'ADD_TO_WATCHLIST', payload: storedStock })
 			)
@@ -87,9 +100,13 @@ export const GlobalProvider = ({ children }) => {
 		fetchStockOverview(symbol)
 			.then((response) => {
 				return stocksService.postStock({
-					...response,
-					amountHeld: amount,
-					purchasePrice: price,
+					overview: {
+						...response,
+					},
+					portfolio: {
+						amountHeld: amount,
+						purchasePrice: price,
+					},
 				});
 			})
 			.then((storedStock) => {
@@ -101,17 +118,17 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error));
 	};
 
-	const deleteDbStock = async (id) => {
-		try {
-			await stocksService.deleteStock(id);
-
-			dispatch({
-				type: 'DELETE_DB_STOCK',
-				payload: id,
-			});
-		} catch (error) {
-			console.error(error);
-		}
+	const deleteDbStock = (id) => {
+		console.log(`Deleting stock with id ${id}...`);
+		stocksService
+			.deleteStock(id)
+			.then((result) => {
+				dispatch({
+					type: 'DELETE_DB_STOCK',
+					payload: id,
+				});
+			})
+			.catch((error) => console.error(error));
 	};
 
 	const setMessage = (type, text) => {
