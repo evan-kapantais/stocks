@@ -17,6 +17,8 @@ import { GlobalContext } from './context/GlobalContext';
 // TODO: Bug: on new stock, quote fetch is successful, error is thrown, but resolves on reload
 // TODO: update once during the weekend, store the latestUpdate on the quote, and check for the date. if the quote has been updated once during the weekend, refrain from fetching data until Monday
 // TODO: Bug: app is deleting the wrong stock
+// TODO: in StockDetails add a loader until all of the data is fetched
+//TODO: style: responsive
 
 function App() {
 	const { getDbStocks, display } = useContext(GlobalContext);
