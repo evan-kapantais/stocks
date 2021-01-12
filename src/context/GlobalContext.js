@@ -49,6 +49,7 @@ export const GlobalProvider = ({ children }) => {
 	};
 
 	const fetchStockOverview = (symbol) => {
+		console.log(`Context: Fetching ${symbol} overview.`);
 		const infoApi = `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
 		return fetch(infoApi)
@@ -59,6 +60,7 @@ export const GlobalProvider = ({ children }) => {
 
 	const fetchStockQuote = (symbol) => {
 		console.log(`Context: Fetching ${symbol} quote.`);
+
 		const quoteApi = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
 		const foundStock = state.stocks.find(
@@ -74,6 +76,7 @@ export const GlobalProvider = ({ children }) => {
 					quote: { ...formattedQuote },
 				});
 			})
+			.then(() => getDbStocks())
 			.catch((error) => console.error(error));
 	};
 
@@ -115,7 +118,8 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error));
 	};
 
-	const deleteDbStock = async (id) => {
+	const deleteDbStock = (id) => {
+		console.log(`Deleting stock with id ${id}...`);
 		stocksService
 			.deleteStock(id)
 			.then((result) => {

@@ -45,6 +45,7 @@ const Overview = ({ stock }) => {
 };
 
 const Financials = ({ stock }) => {
+	console.log(stock.quote);
 	const latestTradingDayData = {
 		High: `$ ${Number(stock.quote.high).toFixed(2)}`,
 		Low: `$ ${Number(stock.quote.low).toFixed(2)}`,
@@ -63,28 +64,32 @@ const Financials = ({ stock }) => {
 
 	return (
 		<>
-			<h2 className='preview-section-title'>Financial Data</h2>
-			<p className='stock-price'>
-				<b>$ {Number(stock.quote.price).toFixed(2)}</b>
-				<span
-					className={`stock-change ${
-						stock.quote.changePercent > 0
-							? 'positive-change'
-							: 'negative-change'
-					}`}
-				>
-					{stock.quote.changePercent > 0 ? '↑' : '↓'}
-					{stock.quote.changePercent.toFixed(3)} %
-				</span>
-			</p>
-			<i className='stock-day'>
-				Latest trading day:{' '}
-				{new Date(stock.quote.latestTradingDay).toUTCString()}
-			</i>
-			<div className='content-grid'>
-				<Table data={latestTradingDayData} title='Latest Trading Day' />
-				<Table data={keyData} title='Key Data' />
-			</div>
+			{stock && (
+				<>
+					<h2 className='preview-section-title'>Financial Data</h2>
+					<p className='stock-price'>
+						<b>$ {Number(stock.quote.price).toFixed(2)}</b>
+						<span
+							className={`stock-change ${
+								stock.quote.changePercent > 0
+									? 'positive-change'
+									: 'negative-change'
+							}`}
+						>
+							{stock.quote.changePercent > 0 ? '↑' : '↓'}
+							{stock.quote.changePercent.toFixed(3)} %
+						</span>
+					</p>
+					<i className='stock-day'>
+						Latest trading day:{' '}
+						{new Date(stock.quote.latestTradingDay).toLocaleDateString()}
+					</i>
+					<div className='content-grid'>
+						<Table data={latestTradingDayData} title='Latest Trading Day' />
+						<Table data={keyData} title='Key Data' />
+					</div>
+				</>
+			)}
 		</>
 	);
 };
@@ -94,29 +99,37 @@ const StockDetails = () => {
 	const signal = abortController.signal;
 
 	const [activeTab, setActiveTab] = useState('overview');
-	const [quote, setQuote] = useState(null);
+	const [stock, setStock] = useState(null);
 	const { display, fetchStockQuote } = useContext(GlobalContext);
 
 	useEffect(() => {
 		// TODO: use quote regardless. if you use the display.stock as default, the recurrent updates are useless and not being reflected in the stock info.
-
-		const latestUpdate = new Date(display.stock.quote.latestUpdate).getTime();
-		const now = new Date().getTime();
-		const updateMargin = 300000;
-
-		console.log(`Latest Update: ${latestUpdate.toLocaleString()}`);
-		console.log(`Now: ${now.toLocaleString()}`);
-		console.log(`Time Difference: ${(now - latestUpdate).toLocaleString()}`);
-		console.log(`Update Margin: ${updateMargin.toLocaleString()}`);
-		console.log(`Time to Update: ${now - latestUpdate > updateMargin}`);
+		// TODO: need to update the Stock object (display is proof), otherwise this will keep fetching the quote when it already has
 
 		if (display.stock.quote) {
-			setQuote(display.stock.quote);
+			setStock(display.stock);
 		} else {
-			fetchStockQuote(display.stock.overview.symbol, { signal }).then((res) =>
-				setQuote(res)
-			);
+			fetchStockQuote(display.stock.overview.symbol, {
+				signal,
+			}).then((res) => {
+				setStock(res);
+				// getDbStocks();
+			});
 		}
+
+		// const date = new Date();
+		// const latestUpdate = new Date(display.stock.quote.latestUpdate).getTime();
+		// const now = date.getTime();
+		// const updateMargin = 300000;
+		// const timeToUpdate = now - latestUpdate > updateMargin;
+		// const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+		// console.log(`Latest Update: ${latestUpdate.toLocaleString()}`);
+		// console.log(`Now: ${now.toLocaleString()}`);
+		// console.log(`Time Difference: ${(now - latestUpdate).toLocaleString()}`);
+		// console.log(`Update Margin: ${updateMargin.toLocaleString()}`);
+		// console.log(`Time to Update: ${timeToUpdate}`);
+		// isWeekend && console.log("it's the weekend");
 
 		return () => {
 			abortController.abort();
@@ -157,7 +170,7 @@ const StockDetails = () => {
 			</header>
 			<main>
 				{activeTab === 'overview' && <Overview stock={display.stock} />}
-				{activeTab === 'quote' && <Financials stock={display.stock || quote} />}
+				{activeTab === 'quote' && <Financials stock={stock} />}
 			</main>
 		</div>
 	);
