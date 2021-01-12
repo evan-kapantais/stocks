@@ -34,7 +34,7 @@ export const GlobalProvider = ({ children }) => {
 					payload: stocks,
 				});
 			})
-			.catch((error) => console.error(error));
+			.catch((error) => console.error(error.message));
 	};
 
 	const fetchSymbolMatches = async (symbol) => {
@@ -44,7 +44,7 @@ export const GlobalProvider = ({ children }) => {
 			const response = await fetch(matchesApi);
 			return response.json();
 		} catch (error) {
-			console.error(error);
+			console.error(error.message);
 		}
 	};
 
@@ -55,7 +55,7 @@ export const GlobalProvider = ({ children }) => {
 		return fetch(infoApi)
 			.then((response) => response.json())
 			.then((quote) => formatStockOverview(quote))
-			.catch((error) => console.error(error));
+			.catch((error) => console.error(error.message));
 	};
 
 	const fetchStockQuote = (symbol) => {
@@ -71,13 +71,10 @@ export const GlobalProvider = ({ children }) => {
 			.then((response) => response.json())
 			.then((quote) => {
 				const formattedQuote = formatStockQuote(quote);
-				return stocksService.updateStock(foundStock.id, {
-					...foundStock,
-					quote: { ...formattedQuote },
-				});
+				const updatedStock = { ...foundStock, quote: { ...formattedQuote } };
+				return stocksService.updateStock(foundStock.id, updatedStock);
 			})
-			.then(() => getDbStocks())
-			.catch((error) => console.error(error));
+			.catch((error) => console.error(error.message));
 	};
 
 	const addToWatchlist = (symbol) => {
@@ -93,7 +90,7 @@ export const GlobalProvider = ({ children }) => {
 			.then((storedStock) =>
 				dispatch({ type: 'ADD_TO_WATCHLIST', payload: storedStock })
 			)
-			.catch((error) => console.error(error));
+			.catch((error) => console.error(error.message));
 	};
 
 	const addToPortfolio = (symbol, amount, price) => {
@@ -115,7 +112,7 @@ export const GlobalProvider = ({ children }) => {
 					payload: storedStock,
 				});
 			})
-			.catch((error) => console.error(error));
+			.catch((error) => console.error(error.message));
 	};
 
 	const deleteDbStock = (id) => {

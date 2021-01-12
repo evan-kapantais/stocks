@@ -16,7 +16,7 @@ const StockDetails = () => {
 	const [viewFullDescription, setViewFullDescription] = useState(false);
 
 	// Context
-	const { display, fetchStockQuote } = useContext(GlobalContext);
+	const { display, fetchStockQuote, getDbStocks } = useContext(GlobalContext);
 
 	useEffect(() => {
 		// TODO: use quote regardless. if you use the display.stock as default, the recurrent updates are useless and not being reflected in the stock info.
@@ -31,6 +31,7 @@ const StockDetails = () => {
 			}).then((res) => {
 				setStock(res);
 				setIsPending(false);
+				getDbStocks();
 			});
 		}
 

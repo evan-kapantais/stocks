@@ -6,7 +6,9 @@ const Form = () => {
 	const [searchMatches, setSearchMatches] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 
-	const { fetchSymbolMatches, setMessage } = useContext(GlobalContext);
+	const { fetchSymbolMatches, setMessage, addToWatchlist } = useContext(
+		GlobalContext
+	);
 
 	const fetchOptions = (e) => {
 		e.preventDefault();
@@ -43,6 +45,9 @@ const Form = () => {
 					/>
 					<button type='submit' className='main-button'>
 						Search
+					</button>
+					<button type='button' onClick={() => addToWatchlist('ATVI')}>
+						Quick Add
 					</button>
 				</form>
 				{searchMatches && (

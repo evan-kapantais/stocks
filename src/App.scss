@@ -70,7 +70,7 @@ details[open] summary span {
 summary {
   user-select: none;
   outline: none;
-  padding: 1rem;
+  padding: 1rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,12 +83,23 @@ summary::-webkit-details-marker {
 
 #watchlist,
 #portfolio {
+  padding: 1rem;
+  border-radius: 10px;
+
   header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
   }
+}
+
+#watchlist {
+  background: $light-color;
+}
+
+#portfolio {
+  background: rgb(239, 212, 254);
 }
 
 aside {
@@ -233,12 +244,14 @@ input:not(:last-of-type) {
   margin-bottom: 1rem;
 }
 
+// Stock
+
 .stock {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
   padding: 1rem;
-  margin: 0.5rem;
+  margin: 0.5rem 0;
   min-height: 120px;
   border-left: 5px solid $accent-color;
   background: #fff;
@@ -435,21 +448,6 @@ input:not(:last-of-type) {
   }
 }
 
-// Tabs
-
-.tabs {
-  margin-bottom: 4rem;
-}
-
-.tab-button {
-  background: none;
-  border: 1px solid grey;
-  border-bottom: none;
-  border-radius: 5px 5px 0 0;
-  outline: none;
-  padding: 0.5rem 1rem;
-}
-
 // Stock preview
 
 #stock-preview-wrapper {
@@ -489,6 +487,14 @@ input:not(:last-of-type) {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
+  }
+
+  .quote-price {
+    width: fit-content;
+    padding: 1rem;
+    border-radius: 10px;
+    border-left: 5px solid $accent-color;
+    box-shadow: 0 0 3px lightgrey;
   }
   
   table {
@@ -557,13 +563,7 @@ input:not(:last-of-type) {
   justify-content: space-between;
 }
 
-.stock-day-info {
-  margin-bottom: 4rem;
-}
-
 .stock-day {
-  display: block;
-  margin-bottom: 1rem;
   color: grey;
 }
 
