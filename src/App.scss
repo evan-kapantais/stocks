@@ -1,6 +1,9 @@
 $light-color: #fff5e1;
 $accent-color: #ffdd98;
 $focus-color: #00aaff;
+$loader-color: #00aaff;
+$loader-size: 10px;
+$loader-spacing: 0.3rem;
 
 * {
   position: relative;
@@ -456,6 +459,12 @@ input:not(:last-of-type) {
   height: 100%;
   overflow-y: scroll;
 
+  &.center-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   header {
     margin-bottom: 4rem;
     display: flex;
@@ -591,4 +600,41 @@ input:not(:last-of-type) {
 
 .negative-change {
   color: red;
+}
+
+// Loader
+
+@keyframes loader {
+  from, to {
+    transform: translateY(0px);
+  }
+  20% {
+    transform: translateY(-5px);
+  }
+  40% {
+    transform: translateY(5px);
+  }
+  60% {
+    transform: translateY(0px);
+  }
+}
+
+#loader {
+  display: flex;
+
+  > div {
+    margin: 0 $loader-spacing;
+    border-radius: 50%;
+    width: $loader-size;
+    height: $loader-size;
+    background: $loader-color;
+    animation: loader 1.5s ease infinite;
+  }
+
+  >div:nth-child(2) {
+    animation-delay: 100ms;
+  }
+  >div:nth-child(3) {
+    animation-delay: 200ms;
+  }
 }
