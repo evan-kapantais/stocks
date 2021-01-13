@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
-
+import Loader from './Loader';
 import apartment from '../icons/apartment-black-18dp.svg';
 import map from '../icons/map-black-18dp.svg';
 import group from '../icons/group-black-18dp.svg';
@@ -49,7 +49,7 @@ const StockDetails = () => {
 		return () => {
 			abortController.abort();
 		};
-	}, []);
+	}, [display.stock]);
 
 	const summary = `${display.stock.overview.description.slice(0, 1000)}...`;
 
@@ -60,8 +60,11 @@ const StockDetails = () => {
 	// );
 
 	return (
-		<div id='stock-preview-wrapper'>
-			{isPending && <p>Loading data...</p>}
+		<div
+			id='stock-preview-wrapper'
+			className={`${isPending && 'center-loader'}`}
+		>
+			{isPending && <Loader />}
 			{!isPending && (
 				<>
 					<header>
