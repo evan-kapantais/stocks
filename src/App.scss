@@ -116,6 +116,7 @@ aside {
 .form-wrapper {
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
   padding-top: 15%;
   background: #fff url('https://source.unsplash.com/weekly') no-repeat center / cover;
 }
