@@ -6,33 +6,16 @@ const SearchResult = ({ match }) => {
 	const [amount, setAmount] = useState(0);
 	const [price, setPrice] = useState(0);
 
-	const { stocks, addToWatchlist, addToPortfolio, setMessage } = useContext(
-		GlobalContext
-	);
+	const { addToWatchlist } = useContext(GlobalContext);
 
 	const matchSymbol = match['1. symbol'];
+	const matchName = match['2. name'];
+	const assetType = match['3. type'];
 
 	const submitForm = (e) => {
 		e.preventDefault();
 
-		if (stocks.find((stock) => stock.symbol === matchSymbol)) {
-			return setMessage('error', 'Stock already in your watchlist');
-		}
-
-		if (!shareholder) {
-			addToWatchlist(matchSymbol);
-		} else {
-			if (amount <= 0) {
-				return setMessage(
-					'error',
-					'Please enter a positive share mount OR add stock to watchlist instead'
-				);
-			} else if (price <= 0) {
-				return setMessage('error', 'Please enter a positive purchase price');
-			}
-
-			addToPortfolio(matchSymbol, amount, price);
-		}
+		addToWatchlist(matchSymbol, matchName, assetType, amount, price);
 
 		const details = e.currentTarget.parentNode;
 		details.removeAttribute('open');
@@ -84,6 +67,7 @@ const SearchResult = ({ match }) => {
 									id='amount'
 									value={amount}
 									onChange={(e) => setAmount(e.target.value)}
+									required
 								/>
 							</div>
 							<div>
@@ -95,6 +79,7 @@ const SearchResult = ({ match }) => {
 									id='price'
 									value={price}
 									onChange={(e) => setPrice(e.target.value)}
+									required
 								/>
 							</div>
 						</div>

@@ -27,6 +27,13 @@ const Portfolio = (props) => {
 					/>
 				))}
 			</ul>
+			<button
+				type='button'
+				className='primary-button'
+				onClick={() => setDisplay('portfolio')}
+			>
+				View Full Portfolio
+			</button>
 		</details>
 	);
 };

@@ -52,6 +52,17 @@ abbr {
   }
 }
 
+.primary-button {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 200ms ease;
+}
+
 .text-button {
   background: none;
   outline: none;
@@ -84,6 +95,20 @@ summary::-webkit-details-marker {
   display: none;
 }
 
+.navbar {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 99;
+}
+
+.display-heading {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-size: 3rem;
+}
+
 #watchlist,
 #portfolio {
   padding: 1rem;
@@ -95,14 +120,6 @@ summary::-webkit-details-marker {
     align-items: center;
     margin-bottom: 2rem;
   }
-}
-
-#watchlist {
-  background: $light-color;
-}
-
-#portfolio {
-  background: rgb(239, 212, 254);
 }
 
 aside {
@@ -256,7 +273,7 @@ input:not(:last-of-type) {
   justify-content: space-between;
   padding: 1rem;
   margin: 0.5rem 0;
-  min-height: 120px;
+  min-height: 150px;
   border-left: 5px solid $accent-color;
   background: #fff;
   box-shadow: 0 0 10px rgba(201, 201, 201, 0.49);
@@ -267,8 +284,13 @@ input:not(:last-of-type) {
   .stock-heading {
     cursor: pointer;
 
+    h3 {
+      margin-bottom: 0.2rem;
+    }
+
     h4 {
       font-size: 0.85rem;
+      margin-bottom: 0.2rem;
     }
 
     .positive-change {
@@ -278,6 +300,12 @@ input:not(:last-of-type) {
     .negative-change {
       color: tomato;
     }
+  }
+
+  .asset-type {
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: grey;
   }
 
   &:not(:last-of-type) {
@@ -363,7 +391,7 @@ input:not(:last-of-type) {
   color: #fff;
   padding: 1.5rem 2rem;
   transition: all 400ms ease;
-  z-index: 99;
+  z-index: 999;
 
   &.message-popup-success,
   &.message-popup-error {
@@ -638,4 +666,80 @@ input:not(:last-of-type) {
   >div:nth-child(3) {
     animation-delay: 200ms;
   }
+}
+
+// Portfolio view
+
+.portfolio-wrapper {
+  height: 100%;
+  overflow: scroll;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  header {
+    margin-bottom: 4rem;
+  }
+}
+
+.portfolio-heading {
+  margin-bottom: 2rem;
+}
+
+.portfolio-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba($color: #111, $alpha: 0.1);
+
+  &:first-of-type {
+    margin-bottom: 4rem;
+  }
+
+  &:last-of-type {
+    td {
+      font-weight: 600;
+      text-align:right;
+    }
+  }
+  
+  thead {
+    background: $accent-color;
+  }
+
+  tfoot {
+    font-weight: 600;
+  }
+
+  tr:nth-child(even) {
+    background: $light-color;
+  }
+
+  td, th {
+    padding: 1rem 1.5rem;
+    text-align: right;
+  }
+
+  th:first-child {
+    text-align: left;
+  }
+
+  td:first-child,
+  td:nth-child(2) {
+    text-align: left;
+  }
+}
+
+// Api timer
+
+.api-timer {
+  background: $accent-color;
+  color: #fff;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 1rem;
+  font-size: 2rem;
+  z-index: 99;
 }

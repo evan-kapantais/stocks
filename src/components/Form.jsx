@@ -13,6 +13,9 @@ const Form = () => {
 	const fetchOptions = (e) => {
 		e.preventDefault();
 
+		const abortController = new AbortController();
+		const signal = abortController.signal;
+
 		if (!inputValue) {
 			setMessage('error', 'Please provide a search symbol');
 			return;
@@ -20,7 +23,7 @@ const Form = () => {
 
 		setMessage('success', 'Searching for matches...');
 
-		fetchSymbolMatches(inputValue).then((matches) => {
+		fetchSymbolMatches(inputValue, { signal }).then((matches) => {
 			if (matches.bestMatches.length === 0) {
 				setMessage('error', 'No matches found');
 			} else {

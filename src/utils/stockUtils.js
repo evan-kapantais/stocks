@@ -1,14 +1,16 @@
 export const formatStockOverview = (stock) => {
+	console.log(stock);
 	const formatted = {
+		assetType: stock.AssetType,
 		symbol: stock.Symbol,
 		name: stock.Name,
-		bookValue: Number(stock.BookValue).toFixed(3),
-		yearHigh: Number(stock['52WeekHigh']).toFixed(3),
-		yearLow: Number(stock['52WeekLow']).toFixed(3),
+		bookValue: stock.BookValue,
+		yearHigh: stock['52WeekHigh'],
+		yearLow: stock['52WeekLow'],
 		exchange: stock.Exchange,
 		industry: stock.Industry,
-		peRatio: Number(stock.PERatio).toFixed(3),
-		pbRatio: Number(stock.PriceToBookRatio).toFixed(3),
+		peRatio: stock.PERatio,
+		pbRatio: stock.PriceToBookRatio,
 		description: stock.Description,
 		address: stock.Address,
 		employees: stock.FullTimeEmployees,
@@ -33,4 +35,45 @@ export const formatStockQuote = (stock) => {
 	};
 
 	return formatted;
+};
+
+export const calculateTotalGain = (stocksArray) => {
+	let totalGain = 0;
+
+	stocksArray.forEach((stock) => {
+		const gain =
+			(stock.quote.price - stock.portfolio.purchasePrice) *
+			stock.portfolio.amountHeld;
+
+		totalGain += gain;
+	});
+
+	return totalGain;
+};
+
+export const calculateTotalPercentGain = (stocksArray) => {
+	return (
+		((calculateTotalCurrentValue(stocksArray) -
+			calculateTotalInitialValue(stocksArray)) /
+			calculateTotalCurrentValue(stocksArray)) *
+		100
+	);
+};
+
+export const calculateTotalShares = (stocksArray) => {
+	return stocksArray
+		.map((stock) => stock.portfolio.amountHeld)
+		.reduce((sum, item) => (sum += item), 0);
+};
+
+export const calculateTotalInitialValue = (stocksArray) => {
+	return stocksArray
+		.map((stock) => stock.portfolio.purchasePrice)
+		.reduce((sum, item) => (sum += item), 0);
+};
+
+export const calculateTotalCurrentValue = (stocksArray) => {
+	return stocksArray
+		.map((stock) => stock.quote.price)
+		.reduce((sum, item) => (sum += item), 0);
 };

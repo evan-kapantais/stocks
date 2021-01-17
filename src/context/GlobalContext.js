@@ -54,7 +54,7 @@ export const GlobalProvider = ({ children }) => {
 
 		return fetch(infoApi)
 			.then((response) => response.json())
-			.then((quote) => formatStockOverview(quote))
+			.then((overview) => formatStockOverview(overview))
 			.catch((error) => console.error(error.message));
 	};
 
@@ -77,14 +77,53 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error.message));
 	};
 
-	const addToWatchlist = (symbol) => {
-		fetchStockOverview(symbol)
-			.then((stock) => {
-				const newStock = {
+	const addFundToWatchlist = (symbol, name, type, amount, price) => {
+		console.log(`Context: Fetching ${symbol}(fund) quote.`);
+
+		const quoteApi = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
+
+		return fetch(quoteApi)
+			.then((res) => res.json())
+			.then((quote) => formatStockQuote(quote))
+			.then((formatted) => {
+				const fund = {
 					overview: {
-						...stock,
+						assetType: type,
+						symbol,
+						name,
 					},
+					quote: { ...formatted },
 				};
+
+				if (amount > 0 && price > 0) {
+					fund.portfolio = { amountHeld: amount, purchasePrice: price };
+				}
+
+				return stocksService.postStock(fund);
+			})
+			.then((storedFund) => {
+				dispatch({ type: 'ADD_TO_WATCHLIST', payload: storedFund });
+			})
+			.catch((error) => console.error(error));
+	};
+
+	const addStockToWatchlist = (symbol, amount, price) => {
+		fetchStockOverview(symbol)
+			.then((overview) => {
+				console.log(overview);
+				const newStock = {
+					overview: { ...overview },
+				};
+
+				if (amount) {
+					newStock.portfolio = {
+						amountHeld: amount,
+						purchasePrice: price,
+					};
+				}
+
+				console.log(newStock);
+
 				return stocksService.postStock(newStock);
 			})
 			.then((storedStock) =>
@@ -93,26 +132,20 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error.message));
 	};
 
-	const addToPortfolio = (symbol, amount, price) => {
-		fetchStockOverview(symbol)
-			.then((response) => {
-				return stocksService.postStock({
-					overview: {
-						...response,
-					},
-					portfolio: {
-						amountHeld: amount,
-						purchasePrice: price,
-					},
-				});
-			})
-			.then((storedStock) => {
-				dispatch({
-					type: 'ADD_TO_WATCHLIST',
-					payload: storedStock,
-				});
-			})
-			.catch((error) => console.error(error.message));
+	const addToWatchlist = (symbol, name, type, amount, price) => {
+		if (state.stocks.find((stock) => stock.overview.symbol === symbol)) {
+			return setMessage('error', 'Stock already in your watchlist');
+		}
+
+		switch (type) {
+			case 'Mutual Fund':
+			case 'ETF':
+				addFundToWatchlist(symbol, name, type, amount, price);
+				break;
+			case 'Equity':
+			default:
+				addStockToWatchlist(symbol, amount, price);
+		}
 	};
 
 	const deleteDbStock = (id) => {
@@ -152,7 +185,6 @@ export const GlobalProvider = ({ children }) => {
 				fetchStockOverview,
 				fetchStockQuote,
 				addToWatchlist,
-				addToPortfolio,
 				deleteDbStock,
 				setMessage,
 				getDbStocks,

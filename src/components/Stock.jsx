@@ -7,6 +7,9 @@ const Header = ({ stock, deleteDbStock, setDisplay }) => {
 			<div className='stock-heading' onClick={() => setDisplay('stock', stock)}>
 				<h3>{stock.overview.symbol.toUpperCase()}</h3>
 				<h4>{stock.overview.name}</h4>
+				<span className='asset-type'>
+					<i>{stock.overview.assetType}</i>
+				</span>
 			</div>
 			<button
 				type='button'

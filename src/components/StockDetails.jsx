@@ -51,7 +51,11 @@ const StockDetails = () => {
 		};
 	}, [display.stock]);
 
-	const summary = `${display.stock.overview.description.slice(0, 1000)}...`;
+	let summary;
+
+	if (display.stock.overview.description) {
+		summary = `${display.stock.overview.description.slice(0, 1000)}...`;
+	}
 
 	// console.log(
 	// 	`${display.stock.overview.symbol} last updated on ${new Date(
@@ -62,7 +66,7 @@ const StockDetails = () => {
 	return (
 		<div
 			id='stock-preview-wrapper'
-			className={`${isPending && 'center-loader'}`}
+			className={`${isPending ? 'center-loader' : ''}`}
 		>
 			{isPending && <Loader />}
 			{!isPending && (
@@ -125,70 +129,78 @@ const StockDetails = () => {
 										</tr>
 									</tbody>
 								</table>
-								<table>
-									<thead>
-										<tr>
-											<th>Key Info</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>Exchange</td>
-											<td>{stock.overview.exchange}</td>
-										</tr>
-										<tr>
-											<td>
-												<abbr title='Price / Earnings Ratio'>P/E Ratio</abbr>
-											</td>
-											<td>{stock.overview.peRatio}</td>
-										</tr>
-										<tr>
-											<td>
-												<abbr title='Price / Book Ratio'>P/B Ratio</abbr>
-											</td>
-											<td>{stock.overview.pbRatio}</td>
-										</tr>
-										<tr>
-											<td>52 Week High</td>
-											<td>$ {stock.overview.yearHigh}</td>
-										</tr>
-										<tr>
-											<td>52 Week Low</td>
-											<td>$ {stock.overview.yearLow}</td>
-										</tr>
-									</tbody>
-								</table>
+								{stock.overview.assetType === 'Common Stock' && (
+									<table>
+										<thead>
+											<tr>
+												<th>Key Info</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td>Exchange</td>
+												<td>{stock.overview.exchange}</td>
+											</tr>
+											<tr>
+												<td>
+													<abbr title='Price / Earnings Ratio'>P/E Ratio</abbr>
+												</td>
+												<td>
+													{stock.overview.peRatio === 'NaN'
+														? 'None'
+														: stock.overview.peRatio}
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<abbr title='Price / Book Ratio'>P/B Ratio</abbr>
+												</td>
+												<td>{stock.overview.pbRatio}</td>
+											</tr>
+											<tr>
+												<td>52 Week High</td>
+												<td>$ {stock.overview.yearHigh}</td>
+											</tr>
+											<tr>
+												<td>52 Week Low</td>
+												<td>$ {stock.overview.yearLow}</td>
+											</tr>
+										</tbody>
+									</table>
+								)}
 							</div>
 						</section>
-						<section className='overview'>
-							<h2 className='section-heading'>Overview</h2>
-							<div id='company-meta'>
-								<div className='overview-row'>
-									<img src={apartment} alt='' />
-									<p>{display.stock.overview.industry}</p>
+						{display.stock.overview.assetType === 'Common Stock' && (
+							<section className='overview'>
+								<h2 className='section-heading'>Overview</h2>
+								<div id='company-meta'>
+									<div className='overview-row'>
+										<img src={apartment} alt='' />
+										<p>{display.stock.overview.industry}</p>
+									</div>
+									<div className='overview-row'>
+										<img src={map} alt='' />
+										<address>{display.stock.overview.address}</address>
+									</div>
+									<div className='overview-row'>
+										<img src={group} alt='' />
+										<p>{display.stock.overview.employees} employees</p>
+									</div>
 								</div>
-								<div className='overview-row'>
-									<img src={map} alt='' />
-									<address>{display.stock.overview.address}</address>
-								</div>
-								<div className='overview-row'>
-									<img src={group} alt='' />
-									<p>{display.stock.overview.employees} employees</p>
-								</div>
-							</div>
-							<p id='company-description'>
-								{viewFullDescription
-									? display.stock.overview.description
-									: summary}
-								<button
-									type='button'
-									className='text-button'
-									onClick={() => setViewFullDescription(!viewFullDescription)}
-								>
-									View {viewFullDescription ? 'Less' : 'More'}
-								</button>
-							</p>
-						</section>
+								<p id='company-description'>
+									{viewFullDescription
+										? display.stock.overview.description
+										: summary}
+									<button
+										type='button'
+										className='text-button'
+										onClick={() => setViewFullDescription(!viewFullDescription)}
+									>
+										View {viewFullDescription ? 'Less' : 'More'}
+									</button>
+								</p>
+							</section>
+						)}
 					</main>
 				</>
 			)}
