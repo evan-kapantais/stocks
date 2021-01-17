@@ -124,6 +124,8 @@ summary::-webkit-details-marker {
 
 aside {
   min-width: 350px;
+  height: 100%;
+  overflow-y: scroll;
   width: fit-content;
   background: rgba(17, 17, 17, 0.062);
 }
@@ -432,14 +434,14 @@ input:not(:last-of-type) {
 // Stock button
 
 .add-stock-wrapper {
-  position: absolute;
+  position: fixed;
   bottom: 0;
-  right: 0;
+  left: 236px;
   height: 100px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 1rem;
+  padding: 2rem;
 }
 
 .add-stock-button {
