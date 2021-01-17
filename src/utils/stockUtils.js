@@ -1,5 +1,4 @@
 export const formatStockOverview = (stock) => {
-	console.log(stock);
 	const formatted = {
 		assetType: stock.AssetType,
 		symbol: stock.Symbol,

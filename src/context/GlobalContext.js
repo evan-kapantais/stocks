@@ -110,7 +110,6 @@ export const GlobalProvider = ({ children }) => {
 	const addStockToWatchlist = (symbol, amount, price) => {
 		fetchStockOverview(symbol)
 			.then((overview) => {
-				console.log(overview);
 				const newStock = {
 					overview: { ...overview },
 				};
@@ -121,8 +120,6 @@ export const GlobalProvider = ({ children }) => {
 						purchasePrice: price,
 					};
 				}
-
-				console.log(newStock);
 
 				return stocksService.postStock(newStock);
 			})
@@ -149,13 +146,12 @@ export const GlobalProvider = ({ children }) => {
 	};
 
 	const deleteDbStock = (id) => {
-		console.log(`Deleting stock with id ${id}...`);
 		stocksService
 			.deleteStock(id)
 			.then((result) => {
 				dispatch({
 					type: 'DELETE_DB_STOCK',
-					payload: id,
+					payload: result.removedStock.id,
 				});
 			})
 			.catch((error) => console.error(error));
