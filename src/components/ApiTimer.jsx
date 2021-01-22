@@ -1,9 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
 
 const ApiTimer = () => {
+	const { apiCalls } = useContext(GlobalContext);
+	const [timer, setTimer] = useState(60);
+
+	useEffect(() => {
+		console.log(apiCalls);
+		setTimeout(() => {
+			if (timer <= 0) {
+				setTimer(0);
+			} else {
+				setTimer(timer - 1);
+			}
+		}, 1000);
+	}, [apiCalls]);
+
 	return (
 		<div className='api-timer'>
-			<p>API timeout: 4:31</p>
+			<small>API timeout</small>
+			<p>{timer}s</p>
 		</div>
 	);
 };

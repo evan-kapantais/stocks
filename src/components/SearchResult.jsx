@@ -33,6 +33,14 @@ const SearchResult = ({ match }) => {
 				<form id='stockholder-form' onSubmit={submitForm}>
 					<div className='radio-group'>
 						<div>
+							{/* <input
+								type='checkbox'
+								name='shareholder'
+								id='shareholder'
+								checked={shareholder}
+								onChange={() => setShareholder(!shareholder)}
+							/>
+							<label htmlFor='shareholder'>I am a shareholder</label> */}
 							<input
 								type='radio'
 								id='check'

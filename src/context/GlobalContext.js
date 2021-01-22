@@ -11,6 +11,7 @@ const initialState = {
 		text: '',
 	},
 	display: { type: 'form', stock: {} },
+	apiCalls: 0,
 };
 
 export const GlobalContext = createContext(initialState);
@@ -22,6 +23,13 @@ export const GlobalProvider = ({ children }) => {
 		dispatch({
 			type: 'SET_DISPLAY',
 			payload: { display, stock },
+		});
+	};
+
+	const incrementApiCalls = () => {
+		dispatch({
+			type: 'INCREMENT_API_CALLS',
+			payload: state.apiCalls,
 		});
 	};
 
@@ -37,15 +45,12 @@ export const GlobalProvider = ({ children }) => {
 			.catch((error) => console.error(error.message));
 	};
 
-	const fetchSymbolMatches = async (symbol) => {
+	const fetchSymbolMatches = (symbol) => {
 		const matchesApi = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${symbol}&apikey=${process.env.REACT_APP_API_KEY}`;
 
-		try {
-			const response = await fetch(matchesApi);
-			return response.json();
-		} catch (error) {
-			console.error(error.message);
-		}
+		return fetch(matchesApi)
+			.then((response) => response.json())
+			.catch((error) => console.error(error.message));
 	};
 
 	const fetchStockOverview = (symbol) => {
@@ -176,6 +181,7 @@ export const GlobalProvider = ({ children }) => {
 				stocks: state.stocks,
 				message: state.message,
 				display: state.display,
+				apiCalls: state.apiCalls,
 				setDisplay,
 				fetchSymbolMatches,
 				fetchStockOverview,

@@ -7,7 +7,6 @@ import Popup from './components/Popup';
 import FullPortfolio from './components/FullPortfolio';
 import { GlobalContext } from './context/GlobalContext';
 import Navbar from './components/Navbar';
-import ApiTimer from './components/ApiTimer';
 
 function App() {
 	const { getDbStocks, display } = useContext(GlobalContext);
@@ -21,7 +20,6 @@ function App() {
 			<Navbar />
 			<Popup />
 			<Aside />
-			<ApiTimer />
 			<section>
 				{display.type === 'form' && <Form />}
 				{display.type === 'stock' && <StockDetails />}

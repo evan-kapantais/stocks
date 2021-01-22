@@ -9,15 +9,13 @@ const Aside = () => {
 		<aside>
 			<Portfolio />
 			<Watchlist />
-			<div className='add-stock-wrapper'>
-				<button
-					type='button'
-					className='add-stock-button'
-					onClick={() => setDisplay('form')}
-				>
-					+
-				</button>
-			</div>
+			<button
+				type='button'
+				className='add-stock-button'
+				onClick={() => setDisplay('form')}
+			>
+				Add Stock
+			</button>
 		</aside>
 	);
 };

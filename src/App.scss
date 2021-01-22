@@ -1,9 +1,12 @@
 $light-color: #fff5e1;
 $accent-color: #ffdd98;
+$portfolio-stock-color: rgb(174, 228, 255);
 $focus-color: #00aaff;
 $loader-color: #00aaff;
 $loader-size: 10px;
-$loader-spacing: 0.3rem;
+$loader-spacing: 0.2rem;
+$desaturated-blue: rgb(85, 150, 183);
+$desaturated-blue-hover: rgb(30, 132, 183);
 
 * {
   position: relative;
@@ -38,7 +41,7 @@ abbr {
 .main-button {
   background: #111;
   border: none;
-  border-radius: 20px;
+  border-radius: 10px;
   outline: none;
   color: #fff;
   font-weight: 600;
@@ -77,16 +80,10 @@ section {
   width: 100%;
 }
 
-details[open] summary span {
-  transform: rotate(180deg);
-}
-
 summary {
   user-select: none;
   outline: none;
-  padding: 1rem 0;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 }
@@ -113,13 +110,44 @@ summary::-webkit-details-marker {
 #portfolio {
   padding: 1rem;
   border-radius: 10px;
+  transition: all 200ms ease;
 
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
+  > summary {
+    color: rgb(96, 96, 96);
+    transition: all 200ms ease;
   }
+
+  .summary-icon {
+    margin-right: 0.5rem;
+    font-size: 0.7rem;
+    transition: all 200ms ease;
+  }
+
+  &[open] > summary {
+    color: inherit;
+  }
+
+  &[open] .summary-icon {
+    transform: rotate(90deg);
+  }
+}
+
+#watchlist {
+  padding-bottom: 60px;
+}
+
+#portfolio summary {
+  justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 0;
 }
 
 aside {
@@ -128,6 +156,7 @@ aside {
   overflow-y: scroll;
   width: fit-content;
   background: rgba(17, 17, 17, 0.062);
+
 }
 
 // Form
@@ -136,14 +165,15 @@ aside {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  padding-top: 15%;
   background: #fff url('https://source.unsplash.com/weekly') no-repeat center / cover;
 }
 
 .form-container {
-  width: 40%;
   min-width: 500px;
+  width: 40%;
   margin: 0 auto;
+  transform: translateY(45vh);
+  transition: all 500ms ease;
 }
 
 .note {
@@ -160,23 +190,22 @@ aside {
 }
 
 #search-form .main-button {
-  background: #fff;
-  color: #111;
+  background: $desaturated-blue;
+  color: #fff;
 
   &:hover {
-    background: $focus-color;
-    color: #fff;
+    background: $desaturated-blue-hover;
   }
 }
 
 #search-stock-input {
   width: 100%;
-  border: none;
+  border: 2px solid transparent;
   outline: none;
   box-shadow: none;
-  border-radius: 20px;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  font-size: 1.2rem;
   margin-right: 1rem;
   transition: all 200ms ease;
   
@@ -189,22 +218,18 @@ aside {
 
 .search-match-item {
   margin: 0.5rem 0;
-  border-radius:10px;
+  border-radius: 10px;
   background: #fff;
   user-select: none;
   cursor: pointer;
   transition: all 100ms ease;
-
-  &:nth-child(even) {
-    background: $light-color;
-  }
 
   &:hover {
     background: $accent-color;
   }
 
   details[open] {
-    background: $accent-color;
+    background: $light-color;
     border-radius: 10px;
   }
 
@@ -275,13 +300,13 @@ input:not(:last-of-type) {
   justify-content: space-between;
   padding: 1rem;
   margin: 0.5rem 0;
-  min-height: 150px;
+  min-height: 50px;
   border-left: 5px solid $accent-color;
   background: #fff;
   box-shadow: 0 0 10px rgba(201, 201, 201, 0.49);
   border-radius: 10px;
   user-select: none;
-  transition: all 100ms ease;
+  transition: all 250ms ease;
   
   .stock-heading {
     cursor: pointer;
@@ -289,25 +314,49 @@ input:not(:last-of-type) {
     h3 {
       margin-bottom: 0.2rem;
     }
-
-    h4 {
-      font-size: 0.85rem;
-      margin-bottom: 0.2rem;
-    }
-
+    
     .positive-change {
       color: lightseagreen;
     }
-
+    
     .negative-change {
       color: tomato;
     }
   }
-
+  
+  .stock-name {
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
+    color: grey;
+    white-space: nowrap;
+    max-width: 22ch;
+    height: 0px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 200ms ease;
+  }
+  
   .asset-type {
     font-size: 0.8rem;
     font-weight: normal;
     color: grey;
+    opacity: 0;
+    display: block;
+    transition: all 200ms 100ms ease;
+  }
+  
+  &:hover {
+    min-height: 120px;
+    
+    .stock-name,
+    .asset-type {
+      opacity: 1;
+    }
+    
+    .stock-name {
+      display: block;
+      height: 16px;
+    }
   }
 
   &:not(:last-of-type) {
@@ -367,10 +416,13 @@ input:not(:last-of-type) {
   p {
     margin-top: 1rem;
   }
+}
+
+.portfolio-stock {
+  border-color: $portfolio-stock-color;
   
-  h4 {
-    color: grey;
-    max-width: 20ch;
+  &:hover {
+    background: $portfolio-stock-color;
   }
 }
 
@@ -433,33 +485,22 @@ input:not(:last-of-type) {
 
 // Stock button
 
-.add-stock-wrapper {
+.add-stock-button {
   position: fixed;
   bottom: 0;
-  left: 236px;
-  height: 100px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 2rem;
-}
-
-.add-stock-button {
-  width: 50px;
-  height: 50px;
-  font-size: 2rem;
-  background: #fff;
-  box-shadow: 0 0 3px rgb(161, 161, 161);
-  border-radius: 50%;
+  min-width: 350px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.8rem 0;
+  background: $desaturated-blue;
   border: none;
   outline: none;
+  color: #fff;
   cursor: pointer;
-  color: #111;
   transition: all 300ms ease;
 
   &:hover {
-    background: #111;
-    color: #fff;
+    background: $desaturated-blue-hover;
   }
 
   &:before {
@@ -674,7 +715,7 @@ input:not(:last-of-type) {
 
 .portfolio-wrapper {
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -741,7 +782,11 @@ input:not(:last-of-type) {
   position: fixed;
   bottom: 0;
   right: 0;
-  padding: 1rem;
+  padding: 0.5rem 2.5rem;
   font-size: 2rem;
   z-index: 99;
+
+  small { font-size: 1rem; }
+
+  p { text-align: right; }
 }

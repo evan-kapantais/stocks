@@ -6,12 +6,13 @@ const Form = () => {
 	const [searchMatches, setSearchMatches] = useState(null);
 	const [inputValue, setInputValue] = useState('');
 
-	const { fetchSymbolMatches, setMessage, addToWatchlist } = useContext(
-		GlobalContext
-	);
+	const { fetchSymbolMatches, setMessage } = useContext(GlobalContext);
 
 	const fetchOptions = (e) => {
 		e.preventDefault();
+
+		const container = document.querySelector('.form-container');
+		container.style.transform = 'translateY(25vh)';
 
 		const abortController = new AbortController();
 		const signal = abortController.signal;
@@ -48,9 +49,6 @@ const Form = () => {
 					/>
 					<button type='submit' className='main-button'>
 						Search
-					</button>
-					<button type='button' onClick={() => addToWatchlist('ATVI')}>
-						Quick Add
 					</button>
 				</form>
 				{searchMatches && (

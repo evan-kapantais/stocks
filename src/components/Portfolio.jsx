@@ -14,8 +14,19 @@ const Portfolio = (props) => {
 	return (
 		<details id='portfolio' open>
 			<summary>
-				<h2>Portfolio</h2>
-				<span role='img'>▼</span>
+				<div>
+					<span role='img' className='summary-icon'>
+						►
+					</span>
+					<h2>Portfolio</h2>
+				</div>
+				<button
+					type='button'
+					className='text-button'
+					onClick={() => setDisplay('portfolio')}
+				>
+					View Full Portfolio
+				</button>
 			</summary>
 			<ul>
 				{!stocks && <p>Loading your portfolio...</p>}
@@ -23,17 +34,10 @@ const Portfolio = (props) => {
 					<Stock
 						key={stock.overview.symbol}
 						stock={stock}
-						showStockDetais={props.showStockDetails}
+						type='portfolio-stock'
 					/>
 				))}
 			</ul>
-			<button
-				type='button'
-				className='primary-button'
-				onClick={() => setDisplay('portfolio')}
-			>
-				View Full Portfolio
-			</button>
 		</details>
 	);
 };

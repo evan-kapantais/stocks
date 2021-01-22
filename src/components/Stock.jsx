@@ -6,7 +6,7 @@ const Header = ({ stock, deleteDbStock, setDisplay }) => {
 		<div className='stock-header'>
 			<div className='stock-heading' onClick={() => setDisplay('stock', stock)}>
 				<h3>{stock.overview.symbol.toUpperCase()}</h3>
-				<h4>{stock.overview.name}</h4>
+				<h4 className='stock-name'>{stock.overview.name}</h4>
 				<span className='asset-type'>
 					<i>{stock.overview.assetType}</i>
 				</span>
@@ -54,11 +54,11 @@ const Footer = ({ stock }) => {
 	);
 };
 
-const Stock = ({ stock }) => {
+const Stock = ({ stock, type }) => {
 	const { deleteDbStock, setDisplay } = useContext(GlobalContext);
 
 	return (
-		<li className='stock'>
+		<li className={`stock ${type}`}>
 			<Header
 				stock={stock}
 				deleteDbStock={deleteDbStock}

@@ -43,6 +43,12 @@ const ContextReducer = (state, action) => {
 		case 'UPDATE_STOCK':
 			console.log(action.payload);
 			break;
+		case 'INCREMENT_API_CALLS': {
+			return {
+				...state,
+				apiCalls: action.payload + 1,
+			};
+		}
 		default:
 			return state;
 	}

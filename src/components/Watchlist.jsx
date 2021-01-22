@@ -14,14 +14,20 @@ const Watchlist = () => {
 	return (
 		<details id='watchlist' open>
 			<summary>
+				<span role='img' className='summary-icon'>
+					►
+				</span>
 				<h2>Watchlist</h2>
-				<span role='img'>▼</span>
 			</summary>
 			<ul>
 				{!stocks && <p>Loading your watchlist...</p>}
 				{watchlist &&
 					watchlist.map((stock) => (
-						<Stock key={stock.overview.symbol} stock={stock} />
+						<Stock
+							key={stock.overview.symbol}
+							stock={stock}
+							type='watchlist-stock'
+						/>
 					))}
 			</ul>
 		</details>
