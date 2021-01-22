@@ -237,9 +237,8 @@ aside {
     padding: 1rem 0.5rem;
   }
 
-  .radio-group,
   .holder-group {
-    margin-bottom: 1rem;
+    margin: 1rem 0;
   }
 
   summary {
@@ -250,22 +249,13 @@ aside {
 }
 
 #stockholder-form {
-
-  input[type=radio] {
-    margin-right: 0.2rem;
+  input[type=checkbox] {
+    margin-right: 0.5rem;
     box-shadow: none;
   }
 
-  .radio-group {
+  .checkbox-wrapper {
     display: flex;
-
-    div {
-      display: flex;
-    }
-
-    div:first-child {
-      margin-right: 1rem;
-    }
   }
 }
 

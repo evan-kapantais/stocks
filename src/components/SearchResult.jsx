@@ -31,39 +31,15 @@ const SearchResult = ({ match }) => {
 					<p>{match['2. name']}</p>
 				</summary>
 				<form id='stockholder-form' onSubmit={submitForm}>
-					<div className='radio-group'>
-						<div>
-							{/* <input
-								type='checkbox'
-								name='shareholder'
-								id='shareholder'
-								checked={shareholder}
-								onChange={() => setShareholder(!shareholder)}
-							/>
-							<label htmlFor='shareholder'>I am a shareholder</label> */}
-							<input
-								type='radio'
-								id='check'
-								name='check'
-								value='yes'
-								checked={shareholder ? true : false}
-								onChange={() => setShareholder(true)}
-							/>
-							<label htmlFor='yes'>I own {match['1. symbol']} stock</label>
-						</div>
-						<div>
-							<input
-								type='radio'
-								id='check'
-								name='check'
-								value='yes'
-								checked={shareholder ? false : true}
-								onChange={() => setShareholder(false)}
-							/>
-							<label htmlFor='no'>
-								I do NOT own {match['1. symbol']} stock
-							</label>
-						</div>
+					<div className='checkbox-wrapper'>
+						<input
+							type='checkbox'
+							name='shareholder'
+							id='shareholder'
+							checked={shareholder}
+							onChange={() => setShareholder(!shareholder)}
+						/>
+						<label htmlFor='shareholder'>I am a shareholder</label>
 					</div>
 					{shareholder && (
 						<div className='holder-group'>
@@ -92,7 +68,7 @@ const SearchResult = ({ match }) => {
 							</div>
 						</div>
 					)}
-					<button type='submit'>
+					<button type='submit' className='primary-button'>
 						Add to {shareholder ? 'Portfolio' : 'Watchlist'}
 					</button>
 				</form>
