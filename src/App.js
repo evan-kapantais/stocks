@@ -1,15 +1,13 @@
 import { useEffect, useContext } from 'react';
-import './App.scss';
-import Form from './components/Form';
-import StockDetails from './components/StockDetails';
-import Aside from './components/Aside';
-import Popup from './components/Popup';
-import FullPortfolio from './components/FullPortfolio';
-import { GlobalContext } from './context/GlobalContext';
 import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Content from './components/Content';
+import Popup from './components/Popup';
+import { GlobalContext } from './context/GlobalContext';
+import './App.scss';
 
 function App() {
-	const { getDbStocks, display } = useContext(GlobalContext);
+	const { getDbStocks } = useContext(GlobalContext);
 
 	useEffect(() => {
 		getDbStocks();
@@ -19,12 +17,8 @@ function App() {
 		<div className='App'>
 			<Navbar />
 			<Popup />
-			<Aside />
-			<section>
-				{display.type === 'form' && <Form />}
-				{display.type === 'stock' && <StockDetails />}
-				{display.type === 'portfolio' && <FullPortfolio />}
-			</section>
+			<Sidebar />
+			<Content />
 		</div>
 	);
 }
