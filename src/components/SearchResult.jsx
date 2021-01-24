@@ -2,7 +2,6 @@ import { useContext, useState } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 
 const SearchResult = ({ match }) => {
-	const [shareholder, setShareholder] = useState(false);
 	const [amount, setAmount] = useState(0);
 	const [price, setPrice] = useState(0);
 
@@ -14,65 +13,56 @@ const SearchResult = ({ match }) => {
 
 	const submitForm = (e) => {
 		e.preventDefault();
-
 		addToWatchlist(matchSymbol, matchName, assetType, amount, price);
-
-		const details = e.currentTarget.parentNode;
-		details.removeAttribute('open');
 	};
 
+	console.log(match);
+
 	return (
-		<li className='search-match-item'>
-			<details>
-				<summary>
-					<p>
-						<b>{matchSymbol}</b>
-					</p>
-					<p>{match['2. name']}</p>
-				</summary>
-				<form id='stockholder-form' onSubmit={submitForm}>
-					<div className='checkbox-wrapper'>
-						<input
-							type='checkbox'
-							name='shareholder'
-							id='shareholder'
-							checked={shareholder}
-							onChange={() => setShareholder(!shareholder)}
-						/>
-						<label htmlFor='shareholder'>I am a shareholder</label>
-					</div>
-					{shareholder && (
+		<li className='search-match-outer'>
+			<div className='search-match-inner'>
+				<div className='search-match-front'>
+					<header>
+						<h4 className='search-match-symbol'>{matchSymbol}</h4>
+						<p className='search-match-name'>{matchName}</p>
+					</header>
+					<footer>
+						<p>{assetType}</p>
+					</footer>
+				</div>
+				<div className='search-match-back'>
+					<form id='stockholder-form' onSubmit={submitForm}>
 						<div className='holder-group'>
 							<div>
-								<label htmlFor='amount'>Purchase Amount</label>
 								<input
 									type='number'
 									name='amount'
 									id='amount'
+									placeholder='Amount Held'
 									value={amount}
 									onChange={(e) => setAmount(e.target.value)}
 									required
 								/>
 							</div>
 							<div>
-								<label htmlFor='price'>Purchase Price</label>
 								<input
 									type='number'
 									step='0.1'
 									name='price'
 									id='price'
+									placeholder='Purchase Price'
 									value={price}
 									onChange={(e) => setPrice(e.target.value)}
 									required
 								/>
 							</div>
 						</div>
-					)}
-					<button type='submit' className='primary-button'>
-						Add to {shareholder ? 'Portfolio' : 'Watchlist'}
-					</button>
-				</form>
-			</details>
+						<button type='submit' className='primary-button'>
+							Add to {amount ? 'Portfolio' : 'Watchlist'}
+						</button>
+					</form>
+				</div>
+			</div>
 		</li>
 	);
 };

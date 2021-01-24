@@ -27,6 +27,10 @@ body {
   overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 ul,
 ol {
   list-style: none;
@@ -77,10 +81,6 @@ abbr {
   color: rgb(0, 157, 255);
   margin-left: 0.5rem;
   cursor: pointer;
-}
-
-section {
-  width: 100%;
 }
 
 summary {
@@ -147,27 +147,78 @@ summary::-webkit-details-marker {
   }
 }
 
-
-::-webkit-scrollbar {
-  width: 0;
+#sidebar {
+  height: 100%;
+  width: 0%;
+  opacity: 0;
+  overflow-y: scroll;
+  background: rgba(17, 17, 17, 0.062);
+  transition: width 300ms ease, opacity 100ms 300ms ease;
+  
+  &.shown {
+    width: 30%;
+    opacity: 1;
+  }
 }
 
-aside {
-  min-width: 350px;
+#sidebar-trigger {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 2rem;
   height: 100%;
-  overflow-y: scroll;
-  width: fit-content;
-  background: rgba(17, 17, 17, 0.062);
+  position: absolute;
+  top: 0;
+  transition: all 200ms ease;
+  
+  button {
+    background: $desaturated-blue;
+    width: 15px;
+    height: 15px;
+    border: 4px solid black;
+    box-shadow: 0 0 0 2px $desaturated-blue;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: all 200ms ease;
 
+    &.open {
+      border-color: transparent;
+      background: transparent;
+    }
+  }
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+#content {
+  width: 100%;
+  height: 100%;
+  transition: all 300ms ease;
 }
 
 // Form
-
 .form-wrapper {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
   background: #fff url('https://source.unsplash.com/weekly') no-repeat center / cover;
+}
+
+.form-overlay {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 100%;
+  height: 100%;
+  background: $desaturated-blue;
+  transition: all 500ms ease;
+
+  &.active {
+    left: 0;
+  }
 }
 
 .form-container {
@@ -219,39 +270,96 @@ aside {
 
 // Search matches
 
-.search-match-item {
-  margin: 0.5rem 0;
-  border-radius: 5px;
-  background: #fff;
-  user-select: none;
+#search-matches {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+}
+
+#matches-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 300px);
+  gap: 1rem;
+}
+
+.search-match-outer {
+  width: 300px;
+  height: 150px;
   cursor: pointer;
+  perspective: 1000px;
   transition: all 100ms ease;
+}
 
-  &:hover {
-    background: $accent-color;
-  }
+.search-match-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 10px rgba($color: #111, $alpha: 0.1);
+  transition: all 500ms ease;
+}
 
-  details[open] {
-    background: $light-color;
-    border-radius: 5px;
-  }
+.search-match-outer:hover .search-match-inner {
+  transform: rotateY(180deg);
+}
 
-  form {
-    padding: 1rem 0.5rem;
-  }
+.search-match-front,
+.search-match-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 5px;
+  padding: 1rem;
+}
 
-  .holder-group {
-    margin: 1rem 0;
-  }
+.search-match-front *,
+.search-match-back * {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
 
-  summary {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem 0.5rem;
+.search-match-front {
+  background: #fff;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  border-left: 5px solid $desaturated-blue;
+
+  footer {
+    text-align: right;
+    font-size: 0.85rem;
   }
 }
 
+.search-match-symbol {
+  margin-bottom: 0.5rem;
+}
+
+.search-match-name {
+  max-width: 20ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-match-back {
+  background: #fff;
+  transform: rotateY(180deg);
+}
+
 #stockholder-form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
   input[type=checkbox] {
     margin-right: 0.5rem;
     box-shadow: none;
@@ -259,6 +367,20 @@ aside {
 
   .checkbox-wrapper {
     display: flex;
+    margin-bottom: 0.5rem;
+  }
+
+  input:first-child {
+    margin-bottom: 0.5rem;
+  }
+
+  button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: $desaturated-blue;
+    border-radius: 0 0 5px 5px;
   }
 }
 
@@ -286,7 +408,6 @@ input:not(:last-of-type) {
 }
 
 // Stock
-
 .stock {
   display: flex;
   flex-flow: column nowrap;
@@ -475,9 +596,10 @@ input:not(:last-of-type) {
 // Stock button
 
 .add-stock-button {
-  position: fixed;
+  position: sticky;
   bottom: 0;
-  min-width: 350px;
+  left: 0;
+  width: 100%;
   font-size: 1rem;
   font-weight: 600;
   padding: 1rem 0;
@@ -494,7 +616,6 @@ input:not(:last-of-type) {
 }
 
 // Stock preview
-
 #stock-preview-wrapper {
   padding: 2rem 4rem;
   width: 100%;

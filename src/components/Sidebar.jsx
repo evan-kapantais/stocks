@@ -6,7 +6,7 @@ import { GlobalContext } from '../context/GlobalContext';
 const Aside = () => {
 	const { setDisplay } = useContext(GlobalContext);
 	return (
-		<aside>
+		<aside id='sidebar'>
 			<Portfolio />
 			<Watchlist />
 			<button
