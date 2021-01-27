@@ -26,15 +26,10 @@ export const GlobalProvider = ({ children }) => {
 		});
 	};
 
-	const incrementApiCalls = () => {
-		dispatch({
-			type: 'INCREMENT_API_CALLS',
-			payload: state.apiCalls,
-		});
-	};
-
 	const getDbStocks = () => {
-		stocksService
+		console.log(`Context: Fetching DB stocks...`);
+
+		return stocksService
 			.getAllStocks()
 			.then((stocks) => {
 				dispatch({

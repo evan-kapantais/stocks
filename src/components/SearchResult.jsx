@@ -16,8 +16,6 @@ const SearchResult = ({ match }) => {
 		addToWatchlist(matchSymbol, matchName, assetType, amount, price);
 	};
 
-	console.log(match);
-
 	return (
 		<li className='search-match-outer'>
 			<div className='search-match-inner'>
