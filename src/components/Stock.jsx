@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalContext';
 
 const Header = ({ stock, deleteDbStock, setDisplay }) => {
@@ -55,7 +55,36 @@ const Footer = ({ stock }) => {
 };
 
 const Stock = ({ stock, type }) => {
-	const { deleteDbStock, setDisplay } = useContext(GlobalContext);
+	const {
+		deleteDbStock,
+		setDisplay,
+		fetchStockQuote,
+		getDbStocks,
+	} = useContext(GlobalContext);
+
+	const updateStock = () => {
+		console.log(`Stock: Attempting ${stock.overview.symbol} quote update...`);
+
+		fetchStockQuote(stock.overview.symbol).then((result) => {
+			if (typeof result !== 'object') {
+				return false;
+			} else {
+				getDbStocks();
+			}
+		});
+	};
+
+	useEffect(() => {
+		let updateInterval;
+
+		updateStock();
+
+		updateInterval = setInterval(updateStock, 60000);
+
+		return () => {
+			clearInterval(updateInterval);
+		};
+	}, []);
 
 	return (
 		<li className={`stock ${type}`}>

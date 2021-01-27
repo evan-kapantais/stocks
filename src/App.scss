@@ -170,6 +170,11 @@ summary::-webkit-details-marker {
   border-radius: 50%;
   outline: none;
   cursor: pointer;
+  transition: all 200ms ease;
+
+  &:hover {
+    transform: scale(1.15);
+  }
 
   
   > div {
@@ -177,12 +182,6 @@ summary::-webkit-details-marker {
     height: 55%;
     background: $desaturated-blue;
     border-radius: 50%;
-    transition: all 500ms ease;
-    
-    &:hover {
-      width: 60%;
-      height: 60%;
-    }
 
     &.open {
       border-color: transparent;
