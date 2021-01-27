@@ -34,6 +34,7 @@ const SearchResult = ({ match }) => {
 					<form id='stockholder-form' onSubmit={submitForm}>
 						<div className='holder-group'>
 							<div>
+								<label htmlFor='amount'>Amount Held</label>
 								<input
 									type='number'
 									name='amount'
@@ -45,6 +46,7 @@ const SearchResult = ({ match }) => {
 								/>
 							</div>
 							<div>
+								<label htmlFor='price'>Purchase Price</label>
 								<input
 									type='number'
 									step='0.1'

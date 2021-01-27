@@ -12,8 +12,6 @@ const Form = () => {
 		e.preventDefault();
 
 		const container = document.querySelector('.form-container');
-		const overlay = document.querySelector('.form-overlay');
-		container.style.transform = 'translateY(25vh)';
 
 		const abortController = new AbortController();
 		const signal = abortController.signal;
@@ -24,14 +22,12 @@ const Form = () => {
 		}
 
 		setMessage('success', 'Searching for matches...');
-		overlay.classList.add('active');
 
 		fetchSymbolMatches(inputValue, { signal }).then((matches) => {
 			if (matches.bestMatches.length === 0) {
 				setMessage('error', 'No matches found');
 			} else {
 				setMessage('success', 'Matches fetched.');
-				overlay.classList.remove('active');
 				setSearchMatches(matches.bestMatches);
 			}
 		});
@@ -41,6 +37,9 @@ const Form = () => {
 
 	return (
 		<div className='form-wrapper'>
+			<h2 className='display-heading'>
+				{!searchMatches ? 'Add New Stock' : 'Search Matches'}
+			</h2>
 			{!searchMatches && (
 				<div className='form-container'>
 					<form id='search-form' onSubmit={fetchOptions}>
@@ -55,30 +54,29 @@ const Form = () => {
 							Search
 						</button>
 					</form>
-					{searchMatches && (
-						<p className='note'>
-							<b>!</b> Click an item to add it to your watchlist.
-						</p>
-					)}
 				</div>
 			)}
 			{searchMatches && (
 				<div id='search-matches'>
-					<ul id='matches-grid'>
-						{searchMatches?.map((match) => (
-							<SearchResult key={match['1. symbol']} match={match} />
-						))}
-					</ul>
-					<button
-						type='button'
-						className='main-button'
-						onClick={() => setSearchMatches(null)}
-					>
-						New Search
-					</button>
+					<div id='matches-container'>
+						{/* <p className='note'>
+							<b>!</b> Select an item to add to your watchlist
+						</p> */}
+						<ul id='matches-grid'>
+							{searchMatches?.map((match) => (
+								<SearchResult key={match['1. symbol']} match={match} />
+							))}
+						</ul>
+						<button
+							type='button'
+							className='main-button'
+							onClick={() => setSearchMatches(null)}
+						>
+							New Search
+						</button>
+					</div>
 				</div>
 			)}
-			<div className='form-overlay'></div>
 		</div>
 	);
 };

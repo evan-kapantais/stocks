@@ -10,6 +10,7 @@ $desaturated-blue-hover: rgb(30, 132, 183);
 // Various values
 $loader-size: 10px;
 $loader-spacing: 0.2rem;
+$sidebar-width: 350px;
 
 * {
   position: relative;
@@ -46,19 +47,19 @@ abbr {
 }
 
 .main-button {
-  background: #111;
+  background: $desaturated-blue;
   border: none;
   border-radius: 5px;
   outline: none;
   color: #fff;
   font-weight: 600;
   font-size: 1rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.7rem 1.5rem;
   cursor: pointer;
   transition: all 200ms ease;
   
   &:hover {
-    background-color: $focus-color;
+    background-color: $desaturated-blue-hover;
   }
 }
 
@@ -115,7 +116,8 @@ summary::-webkit-details-marker {
   transition: all 200ms ease;
 
   > summary {
-    color: rgb(96, 96, 96);
+    color: #fff;
+    mix-blend-mode: difference;
     transition: all 200ms ease;
   }
 
@@ -123,10 +125,6 @@ summary::-webkit-details-marker {
     margin-right: 0.5rem;
     font-size: 0.7rem;
     transition: all 200ms ease;
-  }
-
-  &[open] > summary {
-    color: inherit;
   }
 
   &[open] .summary-icon {
@@ -148,39 +146,43 @@ summary::-webkit-details-marker {
 }
 
 #sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
   height: 100%;
-  width: 0%;
-  opacity: 0;
+  width: $sidebar-width;
   overflow-y: scroll;
-  background: rgba(17, 17, 17, 0.062);
+  background: #fff url('./images/kaylyn-mok-wieW5hMVyV8-unsplash.jpg') no-repeat 0% 50% / cover;
   transition: width 300ms ease, opacity 100ms 300ms ease;
-  
-  &.shown {
-    width: 30%;
-    opacity: 1;
-  }
 }
 
 #sidebar-trigger {
+  position: absolute;
+  bottom: 2rem;
+  left: 2rem;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  padding: 2rem;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  transition: all 200ms ease;
+  align-items: center;
+  background: transparent;
+  width: 20px;
+  height: 20px;
+  border: 2px solid $desaturated-blue;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+
   
-  button {
+  > div {
+    width: 55%;
+    height: 55%;
     background: $desaturated-blue;
-    width: 15px;
-    height: 15px;
-    border: 4px solid black;
-    box-shadow: 0 0 0 2px $desaturated-blue;
     border-radius: 50%;
-    outline: none;
-    cursor: pointer;
-    transition: all 200ms ease;
+    transition: all 500ms ease;
+    
+    &:hover {
+      width: 60%;
+      height: 60%;
+    }
 
     &.open {
       border-color: transparent;
@@ -188,15 +190,18 @@ summary::-webkit-details-marker {
     }
   }
 
-  &.active {
-    opacity: 1;
-  }
 }
 
 #content {
   width: 100%;
   height: 100%;
+  background: #fff url('./images/jonathan-adams-rNPuIBQLKNI-unsplash.jpg') no-repeat center / cover;
   transition: all 300ms ease;
+
+  &.sidebar-open {
+    width: calc(100% - #{$sidebar-width});
+    transform: translateX($sidebar-width);
+  }
 }
 
 // Form
@@ -204,21 +209,6 @@ summary::-webkit-details-marker {
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  background: #fff url('https://source.unsplash.com/weekly') no-repeat center / cover;
-}
-
-.form-overlay {
-  position: absolute;
-  top: 0;
-  left: 100%;
-  width: 100%;
-  height: 100%;
-  background: $desaturated-blue;
-  transition: all 500ms ease;
-
-  &.active {
-    left: 0;
-  }
 }
 
 .form-container {
@@ -230,7 +220,7 @@ summary::-webkit-details-marker {
 }
 
 .note {
-  margin: 1rem 0.5rem;
+  margin-bottom: 2rem;
   color: #fff;
   font-size: 0.85rem;
 }
@@ -245,6 +235,7 @@ summary::-webkit-details-marker {
 #search-form .main-button {
   background: $desaturated-blue;
   color: #fff;
+  border-radius: 3px;
 
   &:hover {
     background: $desaturated-blue-hover;
@@ -257,7 +248,7 @@ summary::-webkit-details-marker {
   background: rgba($color: #fff, $alpha: 0.9);
   outline: none;
   box-shadow: none;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
   margin-right: 1rem;
@@ -279,15 +270,28 @@ summary::-webkit-details-marker {
   align-items: center;
 }
 
+#matches-container {
+  max-width: 1200px;
+  padding: 0 2rem;
+  width: 100%;
+
+  h1 {
+    color: #fff;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
 #matches-grid {
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(3, 300px);
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 .search-match-outer {
-  width: 300px;
-  height: 150px;
+  height: 170px;
   cursor: pointer;
   perspective: 1000px;
   transition: all 100ms ease;
@@ -360,17 +364,12 @@ summary::-webkit-details-marker {
   justify-content: flex-start;
   align-items: center;
 
-  input[type=checkbox] {
-    margin-right: 0.5rem;
-    box-shadow: none;
+  label {
+    margin-bottom: 0.2rem;
   }
 
-  .checkbox-wrapper {
-    display: flex;
-    margin-bottom: 0.5rem;
-  }
 
-  input:first-child {
+  input:first-of-type {
     margin-bottom: 0.5rem;
   }
 
@@ -415,12 +414,18 @@ input:not(:last-of-type) {
   padding: 1rem;
   margin: 0.5rem 0;
   min-height: 50px;
-  border-left: 5px solid $accent-color;
+  border-left: 5px solid $desaturated-blue;
   background: #fff;
   box-shadow: 0 0 10px rgba(201, 201, 201, 0.49);
   border-radius: 5px;
   user-select: none;
   transition: all 250ms ease;
+
+  @media only screen and (max-width: 1200px) {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
   
   .stock-heading {
     cursor: pointer;
@@ -476,10 +481,6 @@ input:not(:last-of-type) {
   &:not(:last-of-type) {
     margin-bottom: 1rem;
   }
-  
-  &:hover {
-    background: $accent-color;
-  }
 
   &:hover .delete-button {
     opacity: 1;
@@ -528,16 +529,7 @@ input:not(:last-of-type) {
   p { margin-top: 1rem; }
 }
 
-.portfolio-stock {
-  border-color: $portfolio-stock-color;
-  
-  &:hover {
-    background: $portfolio-stock-color;
-  }
-}
-
 // Message popup
-
 @keyframes popup-in {
   from {right: -300px}
   to {right: 0}
@@ -574,7 +566,6 @@ input:not(:last-of-type) {
 }
 
 // Toggle list button
-
 .toggle-list {
   border: none;
   outline: none;
@@ -596,10 +587,9 @@ input:not(:last-of-type) {
 // Stock button
 
 .add-stock-button {
-  position: sticky;
+  position: fixed;
   bottom: 0;
-  left: 0;
-  width: 100%;
+  width: $sidebar-width;
   font-size: 1rem;
   font-weight: 600;
   padding: 1rem 0;
@@ -646,19 +636,41 @@ input:not(:last-of-type) {
   }
 
   .details-main {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
   }
   
-  .section-heading {
-    margin-bottom: 3rem;
+  .details-content {
+    padding: 1rem;
+    border-radius: 10px;
+    background: rgba($color: #fff, $alpha: 0.9);
   }
-  
-  .tables-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
+
+  .tabs {
+    left: 1rem;
+  }
+
+  .tab  {
+    outline: none;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-weight: 600;
+    background: rgba($color: #fff, $alpha: 0.5);
+    border-radius: 5px 5px 0 0;
+    transition: all 100ms ease;
+
+    &.active {
+      background: rgba($color: #fff, $alpha: 0.9);
+    }
+
+    &:first-of-type {
+      margin-right: 0.2rem;
+    }
+  }
+
+  .financials-row {
+    display: flex;
+    justify-content: space-around;
   }
 
   .quote-price {
@@ -671,11 +683,13 @@ input:not(:last-of-type) {
   
   table {
     border-collapse: collapse;
+    background: #fff;
+    border-radius: 5px;
 
     th {
       text-align: left;
     }
-  
+
     tr:nth-last-child(even) {
       background: $light-color;
     }
@@ -688,13 +702,24 @@ input:not(:last-of-type) {
       text-align: right;
     }
   }
+
+  #stock-overview {
+    display: flex;
+    justify-content: space-between;
+  }
   
   #company-description {
     line-height: 1.8;
+    flex: 2;
   }
 
   .preview-section-title {
     margin-bottom: 2rem;
+  }
+
+  #company-meta {
+    flex: 1;
+    margin-right: 4rem;
   }
 
   #company-meta,
@@ -818,6 +843,8 @@ input:not(:last-of-type) {
 
 .portfolio-heading {
   margin-bottom: 2rem;
+  color: #fff;
+  mix-blend-mode: difference;
 }
 
 .portfolio-table {
@@ -825,6 +852,7 @@ input:not(:last-of-type) {
   border-collapse: collapse;
   border-radius: 10px;
   overflow: hidden;
+  background: rgba($color: #fff, $alpha: 0.9);
   box-shadow: 0 0 40px rgba($color: #111, $alpha: 0.1);
 
   &:first-of-type {
